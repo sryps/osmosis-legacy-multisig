@@ -78,6 +78,8 @@ class MultiSigForm extends React.Component {
         //   throw new Error("Invalid Secp256k1 pubkey");
         // }
 
+        console.log("address = " + address)
+
         const pubkey = await this.getPubkeyFromNode(address);
         const { pubkeys } = this.state;
         pubkeys[index].compressedPubkey = pubkey;
