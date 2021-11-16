@@ -69,7 +69,7 @@ class TransactionForm extends React.Component {
         `${this.props.address}/transaction/${transactionID}`
       );
     } else {
-      this.setState({ addressError: "Use a valid cosmos-hub address" });
+      this.setState({ addressError: "Use a valid osmosis address" });
     }
   };
 
@@ -87,7 +87,7 @@ class TransactionForm extends React.Component {
             value={this.state.toAddress}
             onChange={this.handleChange}
             error={this.state.addressError}
-            placeholder="cosmos1fjrzd7ycxzse05zme3r2zqwpsvcrskv80wj82h"
+            placeholder="osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk"
           />
         </div>
         <div className="form-item">
