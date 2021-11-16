@@ -10,7 +10,7 @@ export default (props) => (
       {props.tx.msgs && (
         <li>
           <label>Amount:</label>
-          <div>{uatomToAtom(props.tx.msgs[0].value.amount[0].amount)} ATOM</div>
+          <div>{uatomToAtom(props.tx.msgs[0].value.amount[0].amount)} OSMO</div>
         </li>
       )}
       {props.tx.msgs && (
@@ -24,7 +24,7 @@ export default (props) => (
       {props.tx.fee && (
         <li>
           <label>Gas:</label>
-          <div>{props.tx.fee.gas} UATOM</div>
+          <div>{props.tx.fee.gas} UOSMO</div>
         </li>
       )}
       {props.tx.memo && (

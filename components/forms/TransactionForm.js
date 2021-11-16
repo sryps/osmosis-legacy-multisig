@@ -92,7 +92,7 @@ class TransactionForm extends React.Component {
         </div>
         <div className="form-item">
           <Input
-            label="Amount (ATOM)"
+            label="Amount (OSMO)"
             name="amount"
             type="number"
             value={this.state.amount}
@@ -101,7 +101,7 @@ class TransactionForm extends React.Component {
         </div>
         <div className="form-item">
           <Input
-            label="Gas Limit (UATOM)"
+            label="Gas Limit (UOSMO)"
             name="gas"
             type="number"
             value={this.state.gas}
