@@ -101,7 +101,7 @@ constructor(props) {
         </button>
         <h2>Create New transaction</h2>
         <div className="form-item">
-          <Input
+          <TextInput
             label="Transactions"
             name="tx"
             value={this.state.tx}

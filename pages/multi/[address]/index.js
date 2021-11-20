@@ -40,6 +40,8 @@ export async function getServerSideProps(context) {
 
 const multipage = (props) => {
   const [showTxForm, setShowTxForm] = useState(false);
+  const [showTxForm1, setShowTxForm1] = useState(false);
+
   const router = useRouter();
   const { address } = router.query;
   return (
@@ -98,13 +100,13 @@ const multipage = (props) => {
             </div>
           </div>
         )}
-        {showTxForm ? (
+        {showTxForm1 ? (
           <TransactionFormAny
             address={address}
             accountOnChain={props.accountOnChain}
             holdings={props.holdings}
             closeForm={() => {
-              setShowTxForm(false);
+              setShowTxForm1(false);
             }}
           />
         ) : (
@@ -122,7 +124,7 @@ const multipage = (props) => {
                 <Button
                   label="Create Transaction"
                   onClick={() => {
-                    setShowTxForm(true);
+                    setShowTxForm1(true);
                   }}
                 />
               </StackableContainer>
