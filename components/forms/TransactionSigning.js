@@ -64,6 +64,7 @@ export default class TransactionSigning extends React.Component {
   };
 
   signTransaction = async () => {
+    console.log("vuong")
     try {
       window.keplr.defaultOptions = {
         sign: {
@@ -81,6 +82,9 @@ export default class TransactionSigning extends React.Component {
         sequence: this.props.tx.sequence,
         chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
       };
+      console.log(this.props.tx.msgs)
+      console.log(this.state.walletAccount.bech32Address)
+      
       const { bodyBytes, signatures } = await signingClient.sign(
         this.state.walletAccount.bech32Address,
         this.props.tx.msgs,

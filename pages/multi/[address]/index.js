@@ -10,6 +10,8 @@ import MultisigMembers from "../../../components/dataViews/MultisigMembers";
 import Page from "../../../components/layout/Page";
 import StackableContainer from "../../../components/layout/StackableContainer";
 import TransactionForm from "../../../components/forms/TransactionForm";
+import TransactionFormAny from "../../../components/forms/TransactionFormAny";
+
 import TransactionList from "../../../components/dataViews/TransactionList";
 
 export async function getServerSideProps(context) {
@@ -31,7 +33,7 @@ export async function getServerSideProps(context) {
   } catch (error) {
     console.log(error);
     return {
-      props: { error: error.message, holdings: holdings.amount / 1000000 },
+      props: { error: error.message},
     };
   }
 }
@@ -67,6 +69,37 @@ const multipage = (props) => {
         )}
         {showTxForm ? (
           <TransactionForm
+            address={address}
+            accountOnChain={props.accountOnChain}
+            holdings={props.holdings}
+            closeForm={() => {
+              setShowTxForm(false);
+            }}
+          />
+        ) : (
+          <div className="interfaces">
+            <div className="col-1">
+              <MultisigHoldings holdings={props.holdings} />
+            </div>
+            <div className="col-2">
+              <StackableContainer lessPadding>
+                <h2>New transaction</h2>
+                <p>
+                  Once a transaction is created, it can be signed by the
+                  multisig members, and then broadcast.
+                </p>
+                <Button
+                  label="Create Transaction"
+                  onClick={() => {
+                    setShowTxForm(true);
+                  }}
+                />
+              </StackableContainer>
+            </div>
+          </div>
+        )}
+        {showTxForm ? (
+          <TransactionFormAny
             address={address}
             accountOnChain={props.accountOnChain}
             holdings={props.holdings}
