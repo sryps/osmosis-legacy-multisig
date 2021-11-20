@@ -39,24 +39,45 @@ constructor(props) {
     msgValue.fromAddress = msgValue.from_address;
     msgValue.toAddress = msgValue.to_address;
 
+    msgValue.delegatorAddress = this.props.address;
+
     console.log(msgValue)
 
     switch (tx_json_pasred.msgs[0].type) {
       case 'cosmos-sdk/MsgWithdrawDelegationReward':
         var type = '/cosmos.staking.v1beta1.MsgWithdrawDelegationReward';
+        msgValue.validatorAddress = msgValue.validator_address;
+
+        delete msgValue.validator_address;
         break;
+
       case 'cosmos-sdk/MsgDelegate':
         type = '/cosmos.staking.v1beta1.MsgDelegate';
+        msgValue.validatorAddress = msgValue.validator_address;
+          
+        delete msgValue.validator_address;
         break;
+
       case 'cosmos-sdk/MsgSend':
         type = '/cosmos.bank.v1beta1.MsgSend'
         break;
+
       case 'cosmos-sdk/MsgUndelegate':
         type = '/cosmos.staking.v1beta1.MsgUndelegate'
+        msgValue.validatorAddress = msgValue.validator_address;
+
+        delete msgValue.validator_address;
         break;
+        
       case 'cosmos-sdk/MsgBeginRedelegate':
         type = '/cosmos.staking.v1beta1.MsgBeginRedelegate'
+        msgValue.validatorAddress = msgValue.validator_address;
+        msgValue.validatorSrcAddress = msgValue.validator_src_address
+        msgValue.validatorDstAddress = msgValue.validator_dst_address
+
+        delete msgValue.validator_src_address, msgValue.validator_dst_address, msgValue.validator_address
         break;
+
       default: this.setState({ addressError: "Use a valid transaction" });
     }
 
