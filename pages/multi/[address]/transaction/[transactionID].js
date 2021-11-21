@@ -13,6 +13,8 @@ import Page from "../../../../components/layout/Page";
 import StackableContainer from "../../../../components/layout/StackableContainer";
 import ThresholdInfo from "../../../../components/dataViews/ThresholdInfo";
 import TransactionInfo from "../../../../components/dataViews/TransactionInfo";
+import JsonCosmosTransaction from "../../../../components/dataViews/TransactionJSONCosmosForm"; 
+
 import TransactionSigning from "../../../../components/forms/TransactionSigning";
 import CompletedTransaction from "../../../../components/dataViews/CompletedTransaction";
 
@@ -119,6 +121,7 @@ const transactionPage = ({
           <CompletedTransaction transactionHash={transactionHash} />
         )}
         <TransactionInfo tx={txInfo} />
+        <JsonCosmosTransaction tx={txInfo} />
         {!transactionHash && (
           <ThresholdInfo
             signatures={currentSignatures}

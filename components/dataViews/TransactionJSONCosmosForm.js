@@ -1,45 +1,59 @@
 import StackableContainer from "../layout/StackableContainer";
+import CopyAndPaste from "./CopyAndPaste";
+
+const convertKelprTransaction = (transaction) => {
+  let cosmos_tx = {};
+  let body = {};
+  let auth_info = {};
+  let msgValue = {};
+  let msg = transaction.msgs[0]
+  msgValue["@type"] = msg["typeUrl"]
+
+  for(const key in msg.value){
+    if(key === "type") continue;
+    msgValue[key] = msg.value[key];
+  }
+  body["messages"] = [msgValue];
+  body["memo"] = transaction.memo;
+  body["timeout_height"] = "0";
+  body["extension_options"]= [];
+  body["non_critical_extension_options"] = [];
+
+  console.log(body)
+  auth_info["signer_infos"] = [];
+  auth_info["fee"] = {}
+  auth_info["fee"]["amount"] = transaction.fee.amount;
+  auth_info["fee"]["gas_limit"] = transaction.fee.gas;
+  auth_info["fee"]["payer"] = "";
+  auth_info["fee"]["granter"] = "";
+
+  cosmos_tx["body"] = body;
+  cosmos_tx["auth_info"] = auth_info;
+  cosmos_tx["signatures"] = [];
+
+  return cosmos_tx
+}
+
 
 const JsonCosmosTransaction = (props) => {
    return (
     <StackableContainer lessPadding fullHeight>
-      <h2>JsonTransactionCosmosForm</h2>
+      <h2>JsonTransactionCosmosForm <CopyAndPaste copyText={JSON.stringify(props.tx, null, 1)} /></h2>
       <StackableContainer lessPadding lessMargin>
         {props.tx.msgs && (
-            <div><pre>{JSON.stringify(props.tx, null, 1)}</pre></div>
-        )}
-        </StackableContainer>
-      <style jsx>{`
-        ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-        .meta-data div {
-          margin-top: 10px;
-          background: rgba(255, 255, 255, 0.03);
-          padding: 6px 10px;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          font-size: 12px;
+          
+            <div><pre>{JSON.stringify(convertKelprTransaction(props.tx), null, 1)}</pre></div>
 
-        }
-        .meta-data li:first-child {
-          margin-top: 0;
-        }
-        .meta-data label {
-          font-size: 12px;
-          background: rgba(255, 255, 255, 0.1);
-          padding: 3px 6px;
-          border-radius: 5px;
-          display: block;
-        }
-        .meta-data li pre {
-          font-size: 12px;
-          padding: 3px 19px;
-        }
+        )}
+      <style jsx>{`
+            font-size: 13px;
+            padding: 0;
+            margin: 0;
+            hash-view {
+                display: flex;
+            }
       `}</style>
+        </StackableContainer>
     </StackableContainer>
   );
 };
