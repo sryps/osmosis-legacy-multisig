@@ -1,13 +1,14 @@
 import axios from "axios";
 import { encode, decode } from "uint8-to-base64";
 import React from "react";
-import { SigningStargateClient } from "@cosmjs/stargate";
-import { registry } from "@cosmjs/proto-signing";
+import { SigningStargateClient, defaultRegistryTypes} from "@cosmjs/stargate";
+import { Registry } from "@cosmjs/proto-signing";
 
 import Button from "../inputs/Button";
 import TextAreaInput from "../inputs/TextArea";
 import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
+import { TxBody, Tx} from "@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx";
 
 export default class TransactionSigning extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ export default class TransactionSigning extends React.Component {
       sigError: null,
       hasSigned: false,
       selectImport: false,
-      sig: null,
+      sig: "",
       importSigError: null,
     };
   }
@@ -95,6 +96,7 @@ export default class TransactionSigning extends React.Component {
         this.props.tx.memo,
         signerData
       );
+
       // check existing signatures
       const bases64EncodedSignature = encode(signatures[0]);
       const bases64EncodedBodyBytes = encode(bodyBytes);
@@ -140,6 +142,49 @@ export default class TransactionSigning extends React.Component {
     }
 
     //HANDLING SIGNATURE
+    
+  }
+
+  testing = async() => {
+    /* first way to create registry
+    const offlineSigner = window.getOfflineSignerOnlyAmino(
+      process.env.NEXT_PUBLIC_CHAIN_ID
+    );
+    const signingClient = await SigningStargateClient.offline(offlineSigner);
+    let registry = signingClient.registry;
+    */
+    
+    // second way to create registry
+    let registry = new Registry(defaultRegistryTypes);
+    
+    // convert from bodyBytes back to transactions
+    let bytes = "CpsBCiUvY29zbW9zLnN0YWtpbmcudjFiZXRhMS5Nc2dVbmRlbGVnYXRlEnIKK29zbW8xa3hmYTZxdnM0M2N6cnJ6bGpkcTQ5N2ZwbGRnY2x5c3Zxbmpqc3kSMm9zbW92YWxvcGVyMTA4M3N2cmNhNHQzNTBtcGhmdjl4NDV3cTlhc3JzNjBjNnJ2MGo1Gg8KBXVvc21vEgYxMDAwMDA="
+    let txBody = registry.decodeTxBody(decode(bytes))
+    console.log(txBody)
+
+    // TRYING TO CREATE BodyBytes
+    const signedTxBody = {
+      messages: [
+        {
+          "delegator_address": "osmo1dkf74alrfzarkac93a5tzrqsfd47julfrm3rxj",
+          "validator_address": "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5",
+          "amount": {
+            "denom": "uosmo",
+            "amount": "100000"
+          }
+        }
+      ],
+      memo: "",
+    };
+
+    const signedTxBodyEncodeObject = {
+      typeUrl: "/cosmos.tx.v1beta1.TxBody",
+      value: signedTxBody,
+    };
+
+    let bodyBytes = registry.encodeTxBody(signedTxBodyEncodeObject.value)
+
+    console.log(bodyBytes)
   }
 
   render() {
@@ -178,7 +223,7 @@ export default class TransactionSigning extends React.Component {
                   placeholder="paste your signature here"
                 />
 
-                <Button label="Submit signature" onClick={this.importSignature} />
+                <Button label="Submit signature" onClick={this.testing} />
               </>
             ) : (
               <Button label="Import signature" onClick={() => this.setState({ selectImport : true })} />
