@@ -6,6 +6,7 @@ import {JSONObject} from "core-js/fn/object"
 import Button from "../../components/inputs/Button";
 import Input from "../../components/inputs/Input";
 import TextAreaInput from "../../components/inputs/TextArea";
+import { checkAddressOsmoValid, checkValidatorAddressOsmoValid } from "../../lib/errorChecker";
 
 import StackableContainer from "../layout/StackableContainer";
 
@@ -22,6 +23,23 @@ class TransactionFormAny extends React.Component {
       addressError: "",
       tx: "",
     };
+
+    this.addressExtraction = ["validator_address", "delegator_address", "from_address", "to_address", "validator_src_address", "validator_dst_address"]
+    this.addressConversion = ["validatorAddress", "delegatorAddress", "fromAddress", "toAddress", "validatorSrcAddress", "validatorDstAddress"]
+    this.typeMsg = [
+      'cosmos-sdk/MsgWithdrawDelegationReward',
+      'cosmos-sdk/MsgDelegate', 
+      'cosmos-sdk/MsgSend', 
+      'cosmos-sdk/MsgUndelegate', 
+      'cosmos-sdk/MsgBeginRedelegate'
+    ]
+    this.typeMsgConversion = [
+      '/cosmos.staking.v1beta1.MsgWithdrawDelegationReward', 
+      '/cosmos.staking.v1beta1.MsgDelegate', 
+      '/cosmos.bank.v1beta1.MsgSend', 
+      '/cosmos.staking.v1beta1.MsgUndelegate', 
+      '/cosmos.staking.v1beta1.MsgBeginRedelegate'
+    ]
   }
 
   handleChange = (e) => {
@@ -49,7 +67,16 @@ class TransactionFormAny extends React.Component {
   }
 
   createTransaction = () => { 
-    let tx_json_parsed = JSON.parse(this.state.tx);
+    // retrieve information from tx json
+    let tx_json_parsed;
+    try{
+      tx_json_parsed = JSON.parse(this.state.tx);
+    }catch(err) {
+      console.log(err);
+      this.setState({addressError : "Invalid Tx Json. Check TX Again!"});
+      return null;
+    }
+
     var msgValue;
     var type;
     var fee;
@@ -64,47 +91,98 @@ class TransactionFormAny extends React.Component {
       fee = msg.fee;
     }
 
-    console.log(msgValue)
+    // console.log(msgValue)
 
-    msgValue.fromAddress = msgValue.from_address;
-    msgValue.toAddress = msgValue.to_address;
+    // check batch address to see if they are legit
+    for (const address of this.addressExtraction ) {
+      if(!(address in msgValue)) continue;
 
-    msgValue.delegatorAddress = this.props.address;
+      if(address.includes("validator"))
+        if(!checkValidatorAddressOsmoValid(msgValue[address])){
+          this.setState({addressError: "Invalid field " + address + ". Please Check Again!"});
+          return null;
+        }else{
+          continue;
+        }
 
-    console.log(msgValue)
 
+      if(!checkAddressOsmoValid(msgValue[address])){
+        //pop up invalid form to user
+        this.setState({addressError: "Invalid field " + address + ". Please Check Again!"});
+        return null;
+      }
+    }
+
+    //====== NEW ENGINE TO CONVERT ======
+    // convert type
+    let posi = this.typeMsg.indexOf(type);
+    if(posi > -1){
+      type = this.typeMsgConversion[posi];
+    }else if(!this.typeMsgConversion.includes(type)){
+      this.setState({ addressError: "Wrong Transaction Type. Check Again Your Transaction Type" });
+      return null;
+    }
+
+    // convert to compatible field
+    for(let i = 0; i < this.addressExtraction.length; i++){
+      if(!(this.addressExtraction[i] in msgValue)) continue;
+
+      if(this.addressExtraction[i] === "delegator_address" || this.addressExtraction[i] === "from_address"){
+        msgValue[this.addressConversion[i]] = this.props.address;
+      }else{
+        msgValue[this.addressConversion[i]] = msgValue[this.addressExtraction[i]];
+      }
+
+      delete msgValue[this.addressExtraction[i]];
+    }
+
+    // console.log(msgValue);
+
+    //====== END NEW ENGINE TO CONVERT ======
+
+    /* MUST NOT DELETE UNTIL THE CODE ABOVE IS SUFFICIENT TESTED
+    // convert 
     if(type === 'cosmos-sdk/MsgWithdrawDelegationReward' || type === '/cosmos.staking.v1beta1.MsgWithdrawDelegationReward'){
       type = '/cosmos.staking.v1beta1.MsgWithdrawDelegationReward';
+      msgValue.delegatorAddress = this.props.address;
       msgValue.validatorAddress = msgValue.validator_address;
 
-      delete msgValue.validator_address;
+      delete msgValue.validator_address, msgValue.delegator_address;
     }
     else if(type === 'cosmos-sdk/MsgDelegate' || type === '/cosmos.staking.v1beta1.MsgDelegate'){
       type = '/cosmos.staking.v1beta1.MsgDelegate';
+      msgValue.delegatorAddress = this.props.address;
       msgValue.validatorAddress = msgValue.validator_address;
         
-      delete msgValue.validator_address;
+      delete msgValue.validator_address, msgValue.delegator_address;
     }
     else if(type === 'cosmos-sdk/MsgSend' || type === '/cosmos.bank.v1beta1.MsgSend'){
       type = '/cosmos.bank.v1beta1.MsgSend'
+      msgValue.fromAddress = this.props.address;
+      msgValue.toAddress = msgValue.to_address;
+
+      delete msgValue.from_address, msgValue.to_address;
     } 
     else if(type === 'cosmos-sdk/MsgUndelegate' || type === '/cosmos.staking.v1beta1.MsgUndelegate'){
       type = '/cosmos.staking.v1beta1.MsgUndelegate'
+      msgValue.delegatorAddress = this.props.address;
       msgValue.validatorAddress = msgValue.validator_address;
 
-      delete msgValue.validator_address;
+      delete msgValue.validator_address, msgValue.delegator_address;
     }
     else if(type === 'cosmos-sdk/MsgBeginRedelegate' || type === '/cosmos.staking.v1beta1.MsgBeginRedelegate'){
       type = '/cosmos.staking.v1beta1.MsgBeginRedelegate'
+      msgValue.delegatorAddress = this.props.address;
       msgValue.validatorAddress = msgValue.validator_address;
       msgValue.validatorSrcAddress = msgValue.validator_src_address
       msgValue.validatorDstAddress = msgValue.validator_dst_address
 
-      delete msgValue.validator_src_address, msgValue.validator_dst_address, msgValue.validator_address
+      delete msgValue.validator_src_address, msgValue.validator_dst_address, msgValue.validator_address, msgValue.delegator_address;
     }
     else {
-      this.setState({ addressError: "Use a valid transaction" });
+      this.setState({ addressError: "Wrong Transaction Type. Check Again Your Transaction Type" });
     }
+    */
 
     const msg = {
       value: msgValue,
@@ -122,19 +200,23 @@ class TransactionFormAny extends React.Component {
   };
   
   handleCreate = async () => {
-    if (this.state.tx.length != 43) {
-      this.setState({ processing: true });
-      const tx = this.createTransaction();
-      console.log(tx);
-      const dataJSON = JSON.stringify(tx);
-      const res = await axios.post("/api/transaction", { dataJSON });
-      const { transactionID } = res.data;
-      this.props.router.push(
-        `${this.props.address}/transaction/${transactionID}`
-      );
-    } else {
-      this.setState({ addressError: "Use a valid osmosis address" });
+    console.log("creating");
+
+    this.setState({ processing: true });
+    const tx = this.createTransaction();
+    console.log(tx);
+
+    // if failed to create, return null
+    if(!tx){
+      return null;
     }
+
+    const dataJSON = JSON.stringify(tx);
+    const res = await axios.post("/api/transaction", { dataJSON });
+    const { transactionID } = res.data;
+    this.props.router.push(
+      `${this.props.address}/transaction/${transactionID}`
+    );
   };
 
   render() {
