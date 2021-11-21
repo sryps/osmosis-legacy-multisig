@@ -228,7 +228,6 @@ class TransactionFormAny extends React.Component {
         <h2>Import transaction</h2>
         <div className="form-item">
           <TextAreaInput
-            label="Transactions"
             name="tx"
             value={this.state.tx}
             onChange={this.handleChange}
