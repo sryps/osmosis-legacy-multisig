@@ -76,6 +76,7 @@ class TransactionInfo extends React.Component{
       return(
         <StackableContainer lessPadding lessMargin>
         <ul className="meta-data">
+          <h2>Transaction Info</h2>
           {props.tx.msgs && (
             <li>
               <label>MsgType</label>

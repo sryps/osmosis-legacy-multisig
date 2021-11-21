@@ -38,12 +38,10 @@ const convertKelprTransaction = (transaction) => {
 const JsonCosmosTransaction = (props) => {
    return (
     <StackableContainer lessPadding fullHeight>
-      <h2>JsonTransactionCosmosForm <CopyAndPaste copyText={JSON.stringify(props.tx, null, 1)} /></h2>
+      <h2>JsonTransactionCosmosForm <CopyAndPaste copyText={JSON.stringify(convertKelprTransaction(props.tx), null, 1)} /></h2>
       <StackableContainer lessPadding lessMargin>
         {props.tx.msgs && (
-          
-            <div><pre>{JSON.stringify(convertKelprTransaction(props.tx), null, 1)}</pre></div>
-
+           <div><pre>{JSON.stringify(convertKelprTransaction(props.tx), null, 1)}</pre></div>
         )}
       <style jsx>{`
             font-size: 13px;
