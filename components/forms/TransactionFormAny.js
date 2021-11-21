@@ -5,7 +5,7 @@ import { withRouter } from "next/router";
 import {JSONObject} from "core-js/fn/object"
 import Button from "../../components/inputs/Button";
 import Input from "../../components/inputs/Input";
-import TextInput from "../../components/inputs/TextInput";
+import TextAreaInput from "../../components/inputs/TextArea";
 
 import StackableContainer from "../layout/StackableContainer";
 
@@ -120,15 +120,15 @@ constructor(props) {
         <button className="remove" onClick={this.props.closeForm}>
           ✕
         </button>
-        <h2>Create New transaction</h2>
+        <h2>Import transaction</h2>
         <div className="form-item">
-          <TextInput
+          <TextAreaInput
             label="Transactions"
             name="tx"
             value={this.state.tx}
             onChange={this.handleChange}
             error={this.state.addressError}
-            placeholder="osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk"
+            placeholder="paste your transaction here"
           />
         </div>
         <Button label="Create Transaction" onClick={this.handleCreate} />
