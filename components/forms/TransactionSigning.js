@@ -5,6 +5,7 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { registry } from "@cosmjs/proto-signing";
 
 import Button from "../inputs/Button";
+import TextAreaInput from "../inputs/TextArea";
 import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
 
@@ -18,6 +19,9 @@ export default class TransactionSigning extends React.Component {
       walletError: null,
       sigError: null,
       hasSigned: false,
+      selectImport: false,
+      sig: null,
+      importSigError: null,
     };
   }
 
@@ -64,7 +68,6 @@ export default class TransactionSigning extends React.Component {
   };
 
   signTransaction = async () => {
-    console.log("vuong")
     try {
       window.keplr.defaultOptions = {
         sign: {
@@ -119,6 +122,26 @@ export default class TransactionSigning extends React.Component {
     }
   };
 
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  importSignature = async () => {
+    // retrieve information from tx json
+    let sig_json_parsed;
+    try{
+      sig_json_parsed = JSON.parse(this.state.sig);
+    }catch(err) {
+      console.log(err);
+      this.setState({importSigError : "Invalid Tx Json. Check TX Again!"});
+      return null;
+    }
+
+    //HANDLING SIGNATURE
+  }
+
   render() {
     return (
       <StackableContainer lessPadding lessMargin>
@@ -142,6 +165,23 @@ export default class TransactionSigning extends React.Component {
               <Button label="Sign transaction" onClick={this.signTransaction} />
             ) : (
               <Button label="Connect Wallet" onClick={this.connectWallet} />
+            )}
+            
+            <br/>
+            {this.state.selectImport ? (
+              <>
+                <TextAreaInput
+                  name="sig"
+                  value={this.state.sig}
+                  onChange={this.handleChange}
+                  error={this.state.importSigError}
+                  placeholder="paste your signature here"
+                />
+
+                <Button label="Submit signature" onClick={this.importSignature} />
+              </>
+            ) : (
+              <Button label="Import signature" onClick={() => this.setState({ selectImport : true })} />
             )}
           </>
         )}

@@ -60,3 +60,22 @@
   },
   "signatures": []
 }
+
+############ SIGNATURE ############
+{
+  "signatures": [
+    {
+      "public_key": {
+        "@type": "/cosmos.crypto.secp256k1.PubKey",
+        "key": "A3HnK4QH/YPw4ghHru+oWkSILuVUDBrVgYZhM9RLypP1"
+      },
+      "data": {
+        "single": {
+          "mode": "SIGN_MODE_DIRECT",
+          "signature": "MR65HgF1pgPUdpNXPzyOjlqXHSZd20HGsVniDUsXPR8ZJHFXAmvJagIN9I6c2DwakQYWlXwanbWDnsOQlUIUzw=="
+        }
+      },
+      "sequence": "1"
+    }
+  ]
+}
