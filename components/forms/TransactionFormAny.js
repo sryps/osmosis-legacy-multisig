@@ -34,7 +34,7 @@ class TransactionFormAny extends React.Component {
       'cosmos-sdk/MsgBeginRedelegate'
     ]
     this.typeMsgConversion = [
-      '/cosmos.staking.v1beta1.MsgWithdrawDelegationReward', 
+      '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward', 
       '/cosmos.staking.v1beta1.MsgDelegate', 
       '/cosmos.bank.v1beta1.MsgSend', 
       '/cosmos.staking.v1beta1.MsgUndelegate', 
