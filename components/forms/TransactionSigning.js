@@ -8,7 +8,7 @@ import Button from "../inputs/Button";
 import TextAreaInput from "../inputs/TextArea";
 import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
-import { TxBody, Tx} from "@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx";
+import {fromBase64} from "@cosmjs/encoding";
 
 export default class TransactionSigning extends React.Component {
   constructor(props) {
@@ -191,8 +191,21 @@ export default class TransactionSigning extends React.Component {
 
     console.log(bodyBytes)
 
-    // TRYING TO CREATE 
-  }
+    // TRYING TO CREATE SIGNATURE
+    let sig = {
+      pub_key:{
+          type: "tendermint/PubKeySecp256k1",
+          value: "AgRF5K27GQeEobpesp38nU1UdkZDFSPdud88zt3tWCRk"
+      },
+      signature: "EpksNkZTO0+0BeEG4AAlJQVtsQ+wECqwdZektvSL7ml3HbxCeU78lEkW5/Ux0z9hV+Yy0GAzMeIybQRqUTTQwQ=="
+    }
+
+    let signatures = [fromBase64(sig.signature)]
+    console.log(signatures)
+
+    // TRYING TO CREATE BECH32 ADDRESS FROM PUB_KEY
+    
+  } 
 
   render() {
     return (
