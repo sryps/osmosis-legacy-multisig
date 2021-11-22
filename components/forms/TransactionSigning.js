@@ -8,7 +8,6 @@ import Button from "../inputs/Button";
 import TextAreaInput from "../inputs/TextArea";
 import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
-import { TxBody, Tx} from "@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx";
 import {pubkeyToAddress} from "@cosmjs/amino";
 import {fromBase64} from "@cosmjs/encoding";
 
@@ -50,11 +49,7 @@ export default class TransactionSigning extends React.Component {
       processing: false,
     });
   };
-
-  clickFileUpload = () => {
-    this.fileInput.current.click();
-  };
-
+  
   connectWallet = async () => {
     try {
       await window.keplr.enable(process.env.NEXT_PUBLIC_CHAIN_ID);
@@ -98,8 +93,6 @@ export default class TransactionSigning extends React.Component {
         this.props.tx.memo,
         signerData
       );
-
-      console.log(bodyBytes)
 
       // check existing signatures
       const bases64EncodedSignature = encode(signatures[0]);
@@ -146,12 +139,20 @@ export default class TransactionSigning extends React.Component {
       this.setState({importSigError : "Invalid Tx Json. Check TX Again!"});
       return null;
     }
-    //TODO :Vinh write bodyByte convert here
+
+    //Constructing body bytes
     let registry = new Registry(defaultRegistryTypes);
-    const bases64EncodedBodyBytes = "bla bla"
+    const signedTxBodyEncodeObject = {
+      typeUrl: "/cosmos.tx.v1beta1.TxBody",
+      value: {
+        messages : this.props.tx.msgs,
+        memo : this.props.tx.memo,
+      },
+    };
 
-
-
+    let bodyBytes = registry.encode(signedTxBodyEncodeObject)
+    
+    const bases64EncodedBodyBytes = encode(bodyBytes);
     const bech32Address = pubkeyToAddress(sig_json_parsed["signatures"]["public_key"], "osmo")
     const bases64EncodedSignature = sig_json_parsed["data"]["single"]["signature"]
 
@@ -184,6 +185,7 @@ export default class TransactionSigning extends React.Component {
     }
   }
   
+  /* DISABLING TESTING
   testing = async() => {
     // first way to create registry
     const offlineSigner = window.getOfflineSignerOnlyAmino(
@@ -248,6 +250,8 @@ export default class TransactionSigning extends React.Component {
     console.log(bech32Address)
   } 
 
+  */
+
   render(){
     return (
       <StackableContainer lessPadding lessMargin>
@@ -284,7 +288,7 @@ export default class TransactionSigning extends React.Component {
                   placeholder="paste your signature here"
                 />
 
-                <Button label="Submit signature" onClick={this.testing} />
+                <Button label="Submit signature" onClick={this.importSignature} />
               </>
             ) : (
               <Button label="Import signature" onClick={() => this.setState({ selectImport : true })} />
