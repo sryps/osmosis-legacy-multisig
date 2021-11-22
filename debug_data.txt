@@ -1,0 +1,29 @@
+# signature
+{
+    pub_key:{
+        type: "tendermint/PubKeySecp256k1"
+        value: "AgRF5K27GQeEobpesp38nU1UdkZDFSPdud88zt3tWCRk"
+    },
+    signature: "EpksNkZTO0+0BeEG4AAlJQVtsQ+wECqwdZektvSL7ml3HbxCeU78lEkW5/Ux0z9hV+Yy0GAzMeIybQRqUTTQwQ=="
+}
+
+# signedTxBodyEncodeObject
+typeUrl: "/cosmos.tx.v1beta1.TxBody"
+value:
+memo: ""
+messages: Array(1)
+0:
+typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate"
+value:
+amount:
+amount: "100000"
+denom: "uosmo"
+[[Prototype]]: Object
+delegatorAddress: "osmo1kxfa6qvs43czrrzljdq497fpldgclysvqnjjsy"
+validatorAddress: "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5"
+[[Prototype]]: Object
+[[Prototype]]: Object
+length: 1
+[[Prototype]]: Array(0)
+[[Prototype]]: Object
+[[Prototype]]: Object

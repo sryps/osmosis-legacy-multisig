@@ -10,6 +10,7 @@ import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
 import { TxBody, Tx} from "@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx";
 import {pubkeyToAddress} from "@cosmjs/amino";
+import {fromBase64} from "@cosmjs/encoding";
 
 export default class TransactionSigning extends React.Component {
   constructor(props) {
@@ -98,6 +99,8 @@ export default class TransactionSigning extends React.Component {
         signerData
       );
 
+      console.log(bodyBytes)
+
       // check existing signatures
       const bases64EncodedSignature = encode(signatures[0]);
       const bases64EncodedBodyBytes = encode(bodyBytes);
@@ -144,12 +147,17 @@ export default class TransactionSigning extends React.Component {
       return null;
     }
     //TODO :Vinh write bodyByte convert here
+    let registry = new Registry(defaultRegistryTypes);
     var bases64EncodedBodyBytes = "bla bla"
+
+
+
     
     var bech32Address = pubkeyToAddress(sig_json_parsed["signatures"]["public_key"]["key"])
     const bases64EncodedSignature = sig_json_parsed["data"]["single"]["signature"]
 
     //HANDLING SIGNATURE
+  
     const prevSigMatch = this.props.signatures.findIndex(
       (signature) => signature.signature === bases64EncodedSignature
     );
@@ -167,7 +175,6 @@ export default class TransactionSigning extends React.Component {
           `/api/transaction/${this.props.transactionID}/signature`,
           signature
         );
-
         console.log("Signature_base_64 :")
         console.log(bases64EncodedSignature);
         this.props.addSignature(signature);
@@ -180,16 +187,14 @@ export default class TransactionSigning extends React.Component {
   
   testing = async() => {
     // first way to create registry
-    /*
     const offlineSigner = window.getOfflineSignerOnlyAmino(
       process.env.NEXT_PUBLIC_CHAIN_ID
     );
     const signingClient = await SigningStargateClient.offline(offlineSigner, { prefix : "osmo"});
     let registry = signingClient.registry;
-    */
     
     // second way to create registry
-    let registry = new Registry(defaultRegistryTypes);
+    //let registry = new Registry(defaultRegistryTypes);
     
     // convert from bodyBytes back to transactions
     let bytes = "CpsBCiUvY29zbW9zLnN0YWtpbmcudjFiZXRhMS5Nc2dVbmRlbGVnYXRlEnIKK29zbW8xa3hmYTZxdnM0M2N6cnJ6bGpkcTQ5N2ZwbGRnY2x5c3Zxbmpqc3kSMm9zbW92YWxvcGVyMTA4M3N2cmNhNHQzNTBtcGhmdjl4NDV3cTlhc3JzNjBjNnJ2MGo1Gg8KBXVvc21vEgYxMDAwMDA="
@@ -202,8 +207,8 @@ export default class TransactionSigning extends React.Component {
         {
           "typeUrl": "/cosmos.staking.v1beta1.MsgUndelegate",
           "value": {
-            "delegator_address": "osmo1dkf74alrfzarkac93a5tzrqsfd47julfrm3rxj",
-            "validator_address": "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5",
+            "delegatorAddress": "osmo1kxfa6qvs43czrrzljdq497fpldgclysvqnjjsy",
+            "validatorAddress": "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5",
             "amount": {
               "denom": "uosmo",
               "amount": "100000"
@@ -219,14 +224,25 @@ export default class TransactionSigning extends React.Component {
       value: signedTxBody,
     };
 
-    signedTxBodyEncodeObject.value.messages.map((message) => {
-      console.log(message.typeUrl)
-    })
-
     let bodyBytes = registry.encode(signedTxBodyEncodeObject)
 
     console.log(bodyBytes)
-  }
+
+    // TRYING TO CREATE SIGNATURE
+    let sig = {
+      pub_key:{
+          type: "tendermint/PubKeySecp256k1",
+          value: "AgRF5K27GQeEobpesp38nU1UdkZDFSPdud88zt3tWCRk"
+      },
+      signature: "EpksNkZTO0+0BeEG4AAlJQVtsQ+wECqwdZektvSL7ml3HbxCeU78lEkW5/Ux0z9hV+Yy0GAzMeIybQRqUTTQwQ=="
+    }
+
+    let signatures = [fromBase64(sig.signature)]
+    console.log(signatures)
+
+    // TRYING TO CREATE BECH32 ADDRESS FROM PUB_KEY
+    
+  } 
 
   render(){
     return (
