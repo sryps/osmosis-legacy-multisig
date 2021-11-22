@@ -9,6 +9,7 @@ import TextAreaInput from "../inputs/TextArea";
 import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
 import { TxBody, Tx} from "@cosmjs/proto-signing/build/codec/cosmos/tx/v1beta1/tx";
+import {pubkeyToAddress} from "@cosmjs/amino";
 
 export default class TransactionSigning extends React.Component {
   constructor(props) {
@@ -116,6 +117,8 @@ export default class TransactionSigning extends React.Component {
           `/api/transaction/${this.props.transactionID}/signature`,
           signature
         );
+        console.log("Signature_base_64 :")
+        console.log(bases64EncodedSignature);
         this.props.addSignature(signature);
         this.setState({ hasSigned: true });
       }
@@ -140,11 +143,41 @@ export default class TransactionSigning extends React.Component {
       this.setState({importSigError : "Invalid Tx Json. Check TX Again!"});
       return null;
     }
+    //TODO :Vinh write bodyByte convert here
+    var bases64EncodedBodyBytes = "bla bla"
+    
+    var bech32Address = pubkeyToAddress(sig_json_parsed["signatures"]["public_key"]["key"])
+    const bases64EncodedSignature = sig_json_parsed["data"]["single"]["signature"]
 
     //HANDLING SIGNATURE
-    
-  }
+    const prevSigMatch = this.props.signatures.findIndex(
+      (signature) => signature.signature === bases64EncodedSignature
+    );
 
+    try{
+      if (prevSigMatch > -1) {
+        this.setState({ sigError: "This account has already signed." });
+      } else {
+        const signature = {
+          bodyBytes: bases64EncodedBodyBytes,
+          signature: bases64EncodedSignature,
+          address: bech32Address,
+        };
+        const res = await axios.post(
+          `/api/transaction/${this.props.transactionID}/signature`,
+          signature
+        );
+
+        console.log("Signature_base_64 :")
+        console.log(bases64EncodedSignature);
+        this.props.addSignature(signature);
+        this.setState({ hasSigned: true });
+      }
+    } catch (error) {
+      console.log("Error creating signature:", error);
+    }
+  }
+  
   testing = async() => {
     // first way to create registry
     /*
@@ -195,7 +228,7 @@ export default class TransactionSigning extends React.Component {
     console.log(bodyBytes)
   }
 
-  render() {
+  render(){
     return (
       <StackableContainer lessPadding lessMargin>
         {this.state.hasSigned ? (
