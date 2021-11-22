@@ -151,11 +151,19 @@ export default class TransactionSigning extends React.Component {
     };
 
     let bodyBytes = registry.encode(signedTxBodyEncodeObject)
-    
-    const bases64EncodedBodyBytes = encode(bodyBytes);
-    const bech32Address = pubkeyToAddress(sig_json_parsed["signatures"]["public_key"], "osmo")
-    const bases64EncodedSignature = sig_json_parsed["data"]["single"]["signature"]
+    console.log("dataa:")
 
+    var pubkey = sig_json_parsed.signatures[0]["public_key"];
+
+    pubkey["type"] = "tendermint/PubKeySecp256k1"
+    pubkey["value"] = pubkey["key"]
+    
+    delete pubkey["key"]
+    
+    console.log(pubkey)
+    const bases64EncodedBodyBytes = encode(bodyBytes);
+    const bech32Address = pubkeyToAddress(pubkey, "osmo")
+    const bases64EncodedSignature = sig_json_parsed.signatures[0]["data"]["single"]["signature"]
     //HANDLING SIGNATURE
   
     const prevSigMatch = this.props.signatures.findIndex(
