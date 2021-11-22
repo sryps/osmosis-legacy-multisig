@@ -97,6 +97,8 @@ export default class TransactionSigning extends React.Component {
         signerData
       );
 
+      console.log(bodyBytes)
+
       // check existing signatures
       const bases64EncodedSignature = encode(signatures[0]);
       const bases64EncodedBodyBytes = encode(bodyBytes);
@@ -142,21 +144,20 @@ export default class TransactionSigning extends React.Component {
     }
 
     //HANDLING SIGNATURE
+    let registry = new Registry(defaultRegistryTypes);
     
   }
 
   testing = async() => {
     // first way to create registry
-    /*
     const offlineSigner = window.getOfflineSignerOnlyAmino(
       process.env.NEXT_PUBLIC_CHAIN_ID
     );
     const signingClient = await SigningStargateClient.offline(offlineSigner, { prefix : "osmo"});
     let registry = signingClient.registry;
-    */
     
     // second way to create registry
-    let registry = new Registry(defaultRegistryTypes);
+    //let registry = new Registry(defaultRegistryTypes);
     
     // convert from bodyBytes back to transactions
     let bytes = "CpsBCiUvY29zbW9zLnN0YWtpbmcudjFiZXRhMS5Nc2dVbmRlbGVnYXRlEnIKK29zbW8xa3hmYTZxdnM0M2N6cnJ6bGpkcTQ5N2ZwbGRnY2x5c3Zxbmpqc3kSMm9zbW92YWxvcGVyMTA4M3N2cmNhNHQzNTBtcGhmdjl4NDV3cTlhc3JzNjBjNnJ2MGo1Gg8KBXVvc21vEgYxMDAwMDA="
@@ -169,8 +170,8 @@ export default class TransactionSigning extends React.Component {
         {
           "typeUrl": "/cosmos.staking.v1beta1.MsgUndelegate",
           "value": {
-            "delegator_address": "osmo1dkf74alrfzarkac93a5tzrqsfd47julfrm3rxj",
-            "validator_address": "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5",
+            "delegatorAddress": "osmo1kxfa6qvs43czrrzljdq497fpldgclysvqnjjsy",
+            "validatorAddress": "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5",
             "amount": {
               "denom": "uosmo",
               "amount": "100000"
@@ -186,13 +187,11 @@ export default class TransactionSigning extends React.Component {
       value: signedTxBody,
     };
 
-    signedTxBodyEncodeObject.value.messages.map((message) => {
-      console.log(message.typeUrl)
-    })
-
     let bodyBytes = registry.encode(signedTxBodyEncodeObject)
 
     console.log(bodyBytes)
+
+    // TRYING TO CREATE 
   }
 
   render() {
