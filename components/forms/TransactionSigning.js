@@ -148,12 +148,11 @@ export default class TransactionSigning extends React.Component {
     }
     //TODO :Vinh write bodyByte convert here
     let registry = new Registry(defaultRegistryTypes);
-    var bases64EncodedBodyBytes = "bla bla"
+    const bases64EncodedBodyBytes = "bla bla"
 
 
 
-    
-    var bech32Address = pubkeyToAddress(sig_json_parsed["signatures"]["public_key"]["key"])
+    const bech32Address = pubkeyToAddress(sig_json_parsed["signatures"]["public_key"], "osmo")
     const bases64EncodedSignature = sig_json_parsed["data"]["single"]["signature"]
 
     //HANDLING SIGNATURE
@@ -223,12 +222,14 @@ export default class TransactionSigning extends React.Component {
       typeUrl: "/cosmos.tx.v1beta1.TxBody",
       value: signedTxBody,
     };
+    
 
     let bodyBytes = registry.encode(signedTxBodyEncodeObject)
 
     console.log(bodyBytes)
 
     // TRYING TO CREATE SIGNATURE
+    // addr : osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk
     let sig = {
       pub_key:{
           type: "tendermint/PubKeySecp256k1",
@@ -240,8 +241,11 @@ export default class TransactionSigning extends React.Component {
     let signatures = [fromBase64(sig.signature)]
     console.log(signatures)
 
-    // TRYING TO CREATE BECH32 ADDRESS FROM PUB_KEY
-    
+
+
+    // TRYING TO CREATE BECH32 ADDRESS FROM PUB_KEY AND SIGNATURE
+    const bech32Address = pubkeyToAddress(sig["pub_key"], "osmo")
+    console.log(bech32Address)
   } 
 
   render(){
