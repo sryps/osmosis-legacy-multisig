@@ -86,9 +86,7 @@ export default class TransactionSigning extends React.Component {
         sequence: this.props.tx.sequence,
         chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
       };
-      console.log(this.props.tx.msgs)
-      console.log(this.state.walletAccount.bech32Address)
-      
+
       const { bodyBytes, signatures } = await signingClient.sign(
         this.state.walletAccount.bech32Address,
         this.props.tx.msgs,
@@ -96,10 +94,14 @@ export default class TransactionSigning extends React.Component {
         this.props.tx.memo,
         signerData
       );
+      console.log("vuong")
 
       // check existing signatures
       const bases64EncodedSignature = encode(signatures[0]);
       const bases64EncodedBodyBytes = encode(bodyBytes);
+      console.log(bases64EncodedSignature)
+      console.log(bases64EncodedBodyBytes)
+
       const prevSigMatch = this.props.signatures.findIndex(
         (signature) => signature.signature === bases64EncodedSignature
       );
@@ -145,7 +147,7 @@ export default class TransactionSigning extends React.Component {
     
   }
 
-  testing = async() => {
+  testing = () => {
     /* first way to create registry
     const offlineSigner = window.getOfflineSignerOnlyAmino(
       process.env.NEXT_PUBLIC_CHAIN_ID
@@ -160,11 +162,13 @@ export default class TransactionSigning extends React.Component {
     // convert from bodyBytes back to transactions
     let bytes = "CpsBCiUvY29zbW9zLnN0YWtpbmcudjFiZXRhMS5Nc2dVbmRlbGVnYXRlEnIKK29zbW8xa3hmYTZxdnM0M2N6cnJ6bGpkcTQ5N2ZwbGRnY2x5c3Zxbmpqc3kSMm9zbW92YWxvcGVyMTA4M3N2cmNhNHQzNTBtcGhmdjl4NDV3cTlhc3JzNjBjNnJ2MGo1Gg8KBXVvc21vEgYxMDAwMDA="
     let txBody = registry.decodeTxBody(decode(bytes))
+    console.log("This txBody :")
     console.log(txBody)
 
     // TRYING TO CREATE BodyBytes
     const signedTxBody = {
-      messages: [
+      messages: 
+      [
         {
           "delegator_address": "osmo1dkf74alrfzarkac93a5tzrqsfd47julfrm3rxj",
           "validator_address": "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5",
@@ -173,16 +177,20 @@ export default class TransactionSigning extends React.Component {
             "amount": "100000"
           }
         }
-      ],
+      ]
+      ,
       memo: "",
+      timeoutHeight: "",
+      extensionOptions: [],
+      nonCriticalExtensionOptions: [],
     };
-
+    console.log()
     const signedTxBodyEncodeObject = {
-      typeUrl: "/cosmos.tx.v1beta1.TxBody",
+      typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate",
       value: signedTxBody,
     };
-
-    let bodyBytes = registry.encodeTxBody(signedTxBodyEncodeObject.value)
+    console.log(signedTxBodyEncodeObject.value)
+    var bodyBytes = registry.encode(signedTxBodyEncodeObject)
 
     console.log(bodyBytes)
   }
