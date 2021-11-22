@@ -1,7 +1,7 @@
 import axios from "axios";
 import { encode, decode } from "uint8-to-base64";
 import React from "react";
-import { SigningStargateClient, defaultRegistryTypes} from "@cosmjs/stargate";
+import { SigningStargateClient, defaultRegistryTypes, AminoTypes} from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 
 import Button from "../inputs/Button";
@@ -146,11 +146,12 @@ export default class TransactionSigning extends React.Component {
   }
 
   testing = async() => {
-    /* first way to create registry
+    // first way to create registry
+    /*
     const offlineSigner = window.getOfflineSignerOnlyAmino(
       process.env.NEXT_PUBLIC_CHAIN_ID
     );
-    const signingClient = await SigningStargateClient.offline(offlineSigner);
+    const signingClient = await SigningStargateClient.offline(offlineSigner, { prefix : "osmo"});
     let registry = signingClient.registry;
     */
     
@@ -166,11 +167,14 @@ export default class TransactionSigning extends React.Component {
     const signedTxBody = {
       messages: [
         {
-          "delegator_address": "osmo1dkf74alrfzarkac93a5tzrqsfd47julfrm3rxj",
-          "validator_address": "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5",
-          "amount": {
-            "denom": "uosmo",
-            "amount": "100000"
+          "typeUrl": "/cosmos.staking.v1beta1.MsgUndelegate",
+          "value": {
+            "delegator_address": "osmo1dkf74alrfzarkac93a5tzrqsfd47julfrm3rxj",
+            "validator_address": "osmovaloper1083svrca4t350mphfv9x45wq9asrs60c6rv0j5",
+            "amount": {
+              "denom": "uosmo",
+              "amount": "100000"
+            }
           }
         }
       ],
@@ -182,7 +186,11 @@ export default class TransactionSigning extends React.Component {
       value: signedTxBody,
     };
 
-    let bodyBytes = registry.encodeTxBody(signedTxBodyEncodeObject.value)
+    signedTxBodyEncodeObject.value.messages.map((message) => {
+      console.log(message.typeUrl)
+    })
+
+    let bodyBytes = registry.encode(signedTxBodyEncodeObject)
 
     console.log(bodyBytes)
   }
