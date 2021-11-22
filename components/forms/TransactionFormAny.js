@@ -138,52 +138,6 @@ class TransactionFormAny extends React.Component {
 
     // console.log(msgValue);
 
-    //====== END NEW ENGINE TO CONVERT ======
-
-    /* MUST NOT DELETE UNTIL THE CODE ABOVE IS SUFFICIENT TESTED
-    // convert 
-    if(type === 'cosmos-sdk/MsgWithdrawDelegationReward' || type === '/cosmos.staking.v1beta1.MsgWithdrawDelegationReward'){
-      type = '/cosmos.staking.v1beta1.MsgWithdrawDelegationReward';
-      msgValue.delegatorAddress = this.props.address;
-      msgValue.validatorAddress = msgValue.validator_address;
-
-      delete msgValue.validator_address, msgValue.delegator_address;
-    }
-    else if(type === 'cosmos-sdk/MsgDelegate' || type === '/cosmos.staking.v1beta1.MsgDelegate'){
-      type = '/cosmos.staking.v1beta1.MsgDelegate';
-      msgValue.delegatorAddress = this.props.address;
-      msgValue.validatorAddress = msgValue.validator_address;
-        
-      delete msgValue.validator_address, msgValue.delegator_address;
-    }
-    else if(type === 'cosmos-sdk/MsgSend' || type === '/cosmos.bank.v1beta1.MsgSend'){
-      type = '/cosmos.bank.v1beta1.MsgSend'
-      msgValue.fromAddress = this.props.address;
-      msgValue.toAddress = msgValue.to_address;
-
-      delete msgValue.from_address, msgValue.to_address;
-    } 
-    else if(type === 'cosmos-sdk/MsgUndelegate' || type === '/cosmos.staking.v1beta1.MsgUndelegate'){
-      type = '/cosmos.staking.v1beta1.MsgUndelegate'
-      msgValue.delegatorAddress = this.props.address;
-      msgValue.validatorAddress = msgValue.validator_address;
-
-      delete msgValue.validator_address, msgValue.delegator_address;
-    }
-    else if(type === 'cosmos-sdk/MsgBeginRedelegate' || type === '/cosmos.staking.v1beta1.MsgBeginRedelegate'){
-      type = '/cosmos.staking.v1beta1.MsgBeginRedelegate'
-      msgValue.delegatorAddress = this.props.address;
-      msgValue.validatorAddress = msgValue.validator_address;
-      msgValue.validatorSrcAddress = msgValue.validator_src_address
-      msgValue.validatorDstAddress = msgValue.validator_dst_address
-
-      delete msgValue.validator_src_address, msgValue.validator_dst_address, msgValue.validator_address, msgValue.delegator_address;
-    }
-    else {
-      this.setState({ addressError: "Wrong Transaction Type. Check Again Your Transaction Type" });
-    }
-    */
-
     const msg = {
       value: msgValue,
       typeUrl : type,
