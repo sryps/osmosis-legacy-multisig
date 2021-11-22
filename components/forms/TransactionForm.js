@@ -43,6 +43,8 @@ class TransactionForm extends React.Component {
       gas: gasLimit.toString(),
     };
 
+    console.log(this.props)
+
     return {
       accountNumber: this.props.accountOnChain.accountNumber,
       sequence: this.props.accountOnChain.sequence,
