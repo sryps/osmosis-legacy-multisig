@@ -18,6 +18,8 @@ class TransactionForm extends React.Component {
       gas: 200000,
       processing: false,
       addressError: "",
+      fee : 0,
+
     };
   }
 
@@ -39,7 +41,7 @@ class TransactionForm extends React.Component {
     };
     const gasLimit = gas;
     const fee = {
-      amount: coins(6000, process.env.NEXT_PUBLIC_DENOM),
+      amount: coins(this.state.fee, process.env.NEXT_PUBLIC_DENOM),
       gas: gasLimit.toString(),
     };
 
@@ -107,6 +109,15 @@ class TransactionForm extends React.Component {
             name="gas"
             type="number"
             value={this.state.gas}
+            onChange={this.handleChange}
+          />
+        </div>
+        <div className="form-item">
+          <Input
+            label="Fee (UOSMO)"
+            name="fee"
+            type="number"
+            value={this.state.fee}
             onChange={this.handleChange}
           />
         </div>
