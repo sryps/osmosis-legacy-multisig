@@ -67,6 +67,11 @@ class TransactionFormAny extends React.Component {
   }
 
   createTransaction = () => { 
+    if (this.state.processing == true) {
+      console.log("loading")
+      window.alert("Processing");
+    }
+    
     // retrieve information from tx json
     let tx_json_parsed;
     try{

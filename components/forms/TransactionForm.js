@@ -30,6 +30,10 @@ class TransactionForm extends React.Component {
   };
 
   createTransaction = (toAddress, amount, gas) => {
+    if (this.state.processing == true) {
+      console.log("loading")
+      window.alert("Processing");
+    }
     const msgSend = {
       fromAddress: this.props.address,
       toAddress: toAddress,

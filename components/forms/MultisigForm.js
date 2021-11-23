@@ -95,6 +95,10 @@ class MultiSigForm extends React.Component {
   };
 
   handleCreate = async () => {
+    if (this.state.processing == true) {
+      console.log("loading")
+      window.alert("Processing");
+    }
     this.setState({ processing: true });
     const compressedPubkeys = this.state.pubkeys.map(
       (item) => item.compressedPubkey
