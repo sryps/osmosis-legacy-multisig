@@ -58,8 +58,8 @@ class TransactionForm extends React.Component {
   };
 
   handleCreate = async () => {
-    console.log(this.props.accountOnChain.accountNumber)
-    if(!this.props.accountOnChain.accountNumber){
+    console.log(this.props.accountOnChain)
+    if(!this.props.accountOnChain){
       window.alert(`Account with address : ${this.props.address} haven't been in chain yet, can't create Transaction!`);
       return null;
     }

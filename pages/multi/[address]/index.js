@@ -16,6 +16,7 @@ import TransactionList from "../../../components/dataViews/TransactionList";
 
 export async function getServerSideProps(context) {
   let holdings;
+
   try {
     const client = await StargateClient.connect(
       process.env.NEXT_PUBLIC_NODE_ADDRESS
@@ -26,6 +27,13 @@ export async function getServerSideProps(context) {
       process.env.NEXT_PUBLIC_DENOM
     );
     const accountOnChain = await getMultisigAccount(multisigAddress, client);
+
+    if(accountOnChain.pubkey.type != "tendermint/PubKeyMultisigThreshold"){
+      window.alert("This multisig address's pubkeys are not avaiable in chain, and so it cannot be used with this tool")
+      return {
+        props: { error: "This multisig address's pubkeys are fucking not available, and so it cannot be used with this tool."}
+      }
+    }
 
     return {
       props: { accountOnChain, holdings: holdings.amount / 1000000 },

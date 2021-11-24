@@ -67,7 +67,7 @@ class TransactionFormAny extends React.Component {
   }
 
   createTransaction = () => { 
-    if(!this.props.accountOnChain.accountNumber){
+    if(!this.props.accountOnChain){
       window.alert(`Account with address : ${this.props.address} haven't been in chain yet, can't create Transaction!`);
       return null;
     }
