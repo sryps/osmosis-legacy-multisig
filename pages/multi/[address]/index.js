@@ -29,9 +29,8 @@ export async function getServerSideProps(context) {
     const accountOnChain = await getMultisigAccount(multisigAddress, client);
 
     if(accountOnChain.pubkey.type != "tendermint/PubKeyMultisigThreshold"){
-      window.alert("This multisig address's pubkeys are not avaiable in chain, and so it cannot be used with this tool")
       return {
-        props: { error: "This multisig address's pubkeys are fucking not available, and so it cannot be used with this tool."}
+        props: { error: "This is not a multisig address"}
       }
     }
 
@@ -66,7 +65,7 @@ const multipage = (props) => {
           <StackableContainer>
             <div className="multisig-error">
               <p>
-                This multisig address's pubkeys are not available, and so it
+                This multisig address's pubkeys are INVALID or UNAVAILABLE, and so it
                 cannot be used with this tool.
               </p>
               <p>
