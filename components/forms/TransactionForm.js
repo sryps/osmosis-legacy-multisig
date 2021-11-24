@@ -30,10 +30,6 @@ class TransactionForm extends React.Component {
   };
 
   createTransaction = (toAddress, amount, gas) => {
-    if (this.state.processing == true) {
-      console.log("loading")
-      window.alert("Processing");
-    }
     const msgSend = {
       fromAddress: this.props.address,
       toAddress: toAddress,
@@ -62,6 +58,18 @@ class TransactionForm extends React.Component {
   };
 
   handleCreate = async () => {
+    console.log(this.props.accountOnChain.accountNumber)
+    if(!this.props.accountOnChain.accountNumber){
+      window.alert(`Account with address : ${this.props.address} haven't been in chain yet, can't create Transaction!`);
+      return null;
+    }
+
+    if (this.state.processing == true) {
+      console.log("loading")
+      window.alert("Processing");
+      return null;
+    }
+
     if (this.state.toAddress.length === 43) {
       this.setState({ processing: true });
       const tx = this.createTransaction(
@@ -134,7 +142,7 @@ class TransactionForm extends React.Component {
             onChange={this.handleChange}
           />
         </div>
-        <Button label="Create Transaction" onClick={this.handleCreate} />
+        <Button label="Create Transaction" onClick={this.handleCreate}  />
         <style jsx>{`
           p {
             margin-top: 15px;

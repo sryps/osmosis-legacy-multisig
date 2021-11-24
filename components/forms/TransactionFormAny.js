@@ -67,9 +67,15 @@ class TransactionFormAny extends React.Component {
   }
 
   createTransaction = () => { 
+    if(!this.props.accountOnChain.accountNumber){
+      window.alert(`Account with address : ${this.props.address} haven't been in chain yet, can't create Transaction!`);
+      return null;
+    }
+
     if (this.state.processing == true) {
       console.log("loading")
       window.alert("Processing");
+      return null;
     }
     
     // retrieve information from tx json
