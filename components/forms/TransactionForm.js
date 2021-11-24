@@ -45,7 +45,7 @@ class TransactionForm extends React.Component {
     };
     const gasLimit = gas;
     const fee = {
-      amount: coins(this.state.fee, process.env.NEXT_PUBLIC_DENOM),
+      amount: coins(parseInt(this.state.fee), process.env.NEXT_PUBLIC_DENOM),
       gas: gasLimit.toString(),
     };
 
