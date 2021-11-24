@@ -22,17 +22,18 @@ export async function getServerSideProps(context) {
       process.env.NEXT_PUBLIC_NODE_ADDRESS
     );
     const multisigAddress = context.params.address;
-    holdings = await client.getBalance(
-      multisigAddress,
-      process.env.NEXT_PUBLIC_DENOM
-    );
-    const accountOnChain = await getMultisigAccount(multisigAddress, client);
 
+    const accountOnChain = await getMultisigAccount(multisigAddress, client);
     if(accountOnChain.pubkey.type != "tendermint/PubKeyMultisigThreshold"){
       return {
         props: { error: "This is not a multisig address"}
       }
     }
+
+    holdings = await client.getBalance(
+      multisigAddress,
+      process.env.NEXT_PUBLIC_DENOM
+    );
 
     return {
       props: { accountOnChain, holdings: holdings.amount / 1000000 },
