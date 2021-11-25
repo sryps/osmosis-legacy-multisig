@@ -1,6 +1,8 @@
 import copy from "copy-to-clipboard";
 import {pubkeyToAddress} from "@cosmjs/amino";
 import StackableContainer from "../layout/StackableContainer";
+import React, { useState } from "react";
+import Button from "../inputs/Button";
 
 const ComponentsAddress = (props) => {
     let rows = [];
@@ -9,22 +11,35 @@ const ComponentsAddress = (props) => {
     for (var i = 0; i < props.pubkeys.length; i++){
       rows.push(pubkeyToAddress(props.pubkeys[i], "osmo"));
     }
-
+    const [showTxForm, setShowTxForm] = useState(false);
+    const [showCreate, setShowCreate] = useState(true);
     return(
       <StackableContainer>
-        <button className="remove" >
-          ✕
-        </button>
-
+        {showCreate ? (  
+         <StackableContainer lessPadding fullHeight>
+          <Button label="Get Address" onClick={() => {
+                    setShowTxForm(true);
+                    setShowCreate(false);
+                  }} />
+         </StackableContainer>) : null  }
+         { showTxForm ? (
+        <div>
         <h2>Components Address :</h2>
         {/* TODO : Duc do that, add a close, show button */}
         {rows.map(item => (
-          <StackableContainer>
+          <StackableContainer lessPadding lessMargin >
             {item}
-          </StackableContainer>
+          </StackableContainer >
         ))} 
-        
+          <button className="remove" onClick={() => {
+                    setShowTxForm(false);
+                    setShowCreate(true);
+                  }}>
+           ✕
+          </button>
+        </div>) : null }        
         <style jsx>{`
+          
           span {
             text-align: left;
           }
