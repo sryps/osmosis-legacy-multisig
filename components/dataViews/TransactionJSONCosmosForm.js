@@ -1,6 +1,9 @@
 import StackableContainer from "../layout/StackableContainer";
 import CopyAndPaste from "./CopyAndPaste";
 
+const addressConversion = ["validator_address", "delegator_address", "from_address", "to_address", "validator_src_address", "validator_dst_address"]
+const addressExtraction = ["validatorAddress", "delegatorAddress", "fromAddress", "toAddress", "validatorSrcAddress", "validatorDstAddress"]
+
 const convertKelprTransaction = (transaction) => {
   let cosmos_tx = {};
   let body = {};
@@ -12,6 +15,13 @@ const convertKelprTransaction = (transaction) => {
   for(const key in msg.value){
     if(key === "type") continue;
     msgValue[key] = msg.value[key];
+
+    for(let i = 0; i < addressConversion.length; i++){
+      if(!(addressExtraction[i]==key)) continue;
+      msgValue[addressConversion[i]] = msgValue[addressExtraction[i]];
+      
+      delete msgValue[addressExtraction[i]];
+    }
   }
   body["messages"] = [msgValue];
   body["memo"] = transaction.memo;
