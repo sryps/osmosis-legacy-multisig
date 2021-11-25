@@ -1,5 +1,8 @@
 import StackableContainer from "../layout/StackableContainer";
 import CopyAndPaste from "./CopyAndPaste";
+import {addressAmino, addressConversion} from "../../lib/txCheck"
+import Button from "../inputs/Button";
+import React, { useState } from "react";
 
 const convertKelprTransaction = (transaction) => {
   let cosmos_tx = {};
@@ -12,6 +15,13 @@ const convertKelprTransaction = (transaction) => {
   for(const key in msg.value){
     if(key === "type") continue;
     msgValue[key] = msg.value[key];
+
+    for(let i = 0; i < addressAmino.length; i++){
+      if(!(addressConversion[i]==key)) continue;
+      msgValue[addressAmino[i]] = msgValue[addressConversion[i]];
+      
+      delete msgValue[addressConversion[i]];
+    }
   }
   body["messages"] = [msgValue];
   body["memo"] = transaction.memo;
@@ -34,24 +44,66 @@ const convertKelprTransaction = (transaction) => {
   return cosmos_tx
 }
 
-
 const JsonCosmosTransaction = (props) => {
-   return (
+  const [showTxForm, setShowTxForm] = useState(false);
+  const [showCreate, setShowCreate] = useState(true);
+  return (
+
     <StackableContainer lessPadding fullHeight>
-      <h2>JsonTransactionCosmosForm <CopyAndPaste copyText={JSON.stringify(convertKelprTransaction(props.tx), null, 1)} /></h2>
-      <StackableContainer lessPadding lessMargin>
-        {props.tx.msgs && (
-           <div><pre>{JSON.stringify(convertKelprTransaction(props.tx), null, 1)}</pre></div>
-        )}
-      <style jsx>{`
-            font-size: 13px;
+      {showCreate ? (  
+         <StackableContainer lessPadding fullHeight>
+          <Button label="Get Transaction" onClick={() => {
+                    setShowTxForm(true);
+                    setShowCreate(false);
+                  }} />
+         </StackableContainer>) : null  }
+      { showTxForm ? (
+      <div>
+        <div className="hash-view">
+          <h2>JsonCosmosTransaction</h2>
+          <div className="button-view">
+            <CopyAndPaste copyText={JSON.stringify(convertKelprTransaction(props.tx), null, 1)} />
+          </div>
+        </div>
+        <StackableContainer lessPadding lessMargin className="context">
+          {props.tx.msgs && (
+            <div className="context"><pre>{JSON.stringify(convertKelprTransaction(props.tx), null, 1)}</pre></div>
+          )}
+          <button className="remove" onClick={() => {
+                    setShowTxForm(false);
+                    setShowCreate(true);
+                  }}>
+           ✕
+          </button>
+    </StackableContainer>
+    </div>) : null }  
+        <style jsx>{`
             padding: 0;
             margin: 0;
             hash-view {
                 display: flex;
+            }.hash-view {
+              display: flex;
+              font-size:20px;
+
+            }.button-view{
+              margin-left:auto;
+            }.context{
+              font-size:12px;
             }
+            button.remove {
+              background: rgba(255, 255, 255, 0.2);
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              border: none;
+              color: white;
+              position: absolute;
+              right: 10px;
+              top: 10px;
+            }
+            
       `}</style>
-        </StackableContainer>
     </StackableContainer>
   );
 };

@@ -63,11 +63,13 @@ const transactionPage = ({
   nodeAddress,
   txHash,
 }) => {
+  const [showTxForm, setShowTxForm] = useState(false);
   const [currentSignatures, setCurrentSignatures] = useState(signatures);
   const [broadcastError, setBroadcastError] = useState("");
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   const [transactionHash, setTransactionHash] = useState(txHash);
   const txInfo = (transactionJSON && JSON.parse(transactionJSON)) || null;
+  
   const addSignature = (signature) => {
     setCurrentSignatures((currentSignatures) => [
       ...currentSignatures,
@@ -121,6 +123,16 @@ const transactionPage = ({
           <CompletedTransaction transactionHash={transactionHash} />
         )}
         <TransactionInfo tx={txInfo} />
+        {showTxForm ? (
+        <JsonCosmosTransaction
+         tx={txInfo}           
+         closeForm={() => {
+          setShowTxForm(false);
+          setShowCreate(true);
+        }} />
+        ) : (
+          <div></div>
+        )}
         <JsonCosmosTransaction tx={txInfo} />
         {!transactionHash && (
           <ThresholdInfo

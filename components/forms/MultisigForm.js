@@ -95,10 +95,21 @@ class MultiSigForm extends React.Component {
   };
 
   handleCreate = async () => {
-    this.setState({ processing: true });
     const compressedPubkeys = this.state.pubkeys.map(
       (item) => item.compressedPubkey
     );
+
+    if (this.state.processing == true) {
+      console.log("loading")
+      window.alert("Processing");
+    }
+
+    if(compressedPubkeys.includes('')){
+      window.alert("Please wait for all query in chain")
+    }
+
+    this.setState({ processing: true });
+
     let multisigAddress;
     try {
       multisigAddress = await createMultisigFromCompressedSecp256k1Pubkeys(

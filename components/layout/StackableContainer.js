@@ -22,7 +22,7 @@ const StackableContainer = (props) => (
 
       .base {
         max-width: 750px;
-        background: #62145f;
+        background: #201C5B;
         box-shadow: 0px 28px 80px rgba(0, 0, 0, 0.07),
           0px 12.7134px 39.2617px rgba(0, 0, 0, 0.0519173),
           0px 7.26461px 23.349px rgba(0, 0, 0, 0.0438747),
@@ -31,6 +31,7 @@ const StackableContainer = (props) => (
           0px 1.53495px 5.02137px rgba(0, 0, 0, 0.0261253),
           0px 0.671179px 2.19114px rgba(0, 0, 0, 0.0180827);
       }
+      
     `}</style>
   </div>
 );
