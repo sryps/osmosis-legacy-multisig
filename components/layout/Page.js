@@ -70,9 +70,9 @@ const Page = (props) => {
             sans-serif;
           color: white;
           min-height: 100vh;
-          background-image: url("https://i.imgur.com/5otPYix.jpeg"),url("https://i.imgur.com/v4EIRIW.png"), url("https://app.osmosis.zone/public/assets/backgrounds/osmosis-home-bg-pattern.svg?fbclid=IwAR19OkrUiYrMc-aEVJrzHR4KLQrGIeQ0LIaR6Az6JmROPHdviV5wi38x9cg"),linear-gradient(280deg, #050628, #15163C);
-          background-position: center top, left bottom;
-          background-repeat: no-repeat, no-repeat,repeat, repeat;
+          background-image: url("https://i.imgur.com/v4EIRIW.png"), url("https://app.osmosis.zone/public/assets/backgrounds/osmosis-home-bg-pattern.svg?fbclid=IwAR19OkrUiYrMc-aEVJrzHR4KLQrGIeQ0LIaR6Az6JmROPHdviV5wi38x9cg"),linear-gradient(280deg, #050628, #15163C);
+          background-position:  left bottom;
+          background-repeat: no-repeat,repeat, repeat;
           font-size: 16px;
           margin: 0;
         }
