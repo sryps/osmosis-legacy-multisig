@@ -19,7 +19,7 @@ This app requires the [Keplr wallet extension](https://wallet.keplr.app/) to be 
 
 To use this app with an existing multisig account, simply enter the address in the field provided, and click "Use this Multisig". Note that this address must have sent transactions in the past for this app to be able to use it. If you have an existing multisig that has not sent any transactions, you can recreate it using this tool (be sure to enter the same public keys and threshold). 
 
-![Screen Shot 2021-09-05 at 1 08 28 PM](https://user-images.githubusercontent.com/6718506/132136687-856a71bd-cd3b-465c-a2e8-8f4283161a11.png)
+![Screen Shot 2021-09-05 at 1 08 28 PM](image/import-multisig)
 
 You may want to [Create a Transaction](#creating-a-transaction) next.
 
@@ -27,9 +27,7 @@ You may want to [Create a Transaction](#creating-a-transaction) next.
 
 To create a new multisig account, click the "Create New Multisig" button on the app's homepage. Then enter in the addresses of the accounts you would like to use, as well as the number of signatures required to sign a transaction. Click "Create Multisig". These addresses must have sent transactions in the past to be used, the app will show an error if there is no on chain account information for any of the addresses.
 
-![Screen Shot 2021-10-04 at 10 10 21 PM](https://user-images.githubusercontent.com/6718506/135949511-b0d51820-7359-4707-a873-966e31b187c0.png)
-![Screen Shot 2021-10-04 at 10 10 24 PM](https://user-images.githubusercontent.com/6718506/135949518-08e9e994-9695-4847-b152-5f28610dd221.png)
-
+![Screen Shot 2021-10-04 at 10 10 21 PM](image/create-multisig.png)
 
 You may want to [Create a Transaction](#creating-a-transaction) next.
 
