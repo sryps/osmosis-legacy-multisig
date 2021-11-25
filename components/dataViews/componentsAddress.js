@@ -7,16 +7,29 @@ const ComponentsAddress = (props) => {
     console.log(props.pubkeys.length)
     console.log(props.pubkeys[0])
     for (var i = 0; i < props.pubkeys.length; i++){
-        rows.push(pubkeyToAddress(props.pubkeys[i], "osmo"));
+      rows.push(pubkeyToAddress(props.pubkeys[i], "osmo"));
     }
 
     return(
-        <StackableContainer>
+      <StackableContainer>
         <button className="remove" >
           ✕
         </button>
-        <style>{`
-        button.remove {
+
+        <h2>Components Address :</h2>
+        {/* TODO : Duc do that, add a close, show button */}
+        {rows.map(item => (
+          <StackableContainer>
+            {item}
+          </StackableContainer>
+        ))} 
+        
+        <style jsx>{`
+          span {
+            text-align: left;
+          }
+
+          button.remove {
             background: rgba(255, 255, 255, 0.2);
             width: 30px;
             height: 30px;
@@ -26,14 +39,7 @@ const ComponentsAddress = (props) => {
             position: absolute;
             right: 10px;
             top: 10px;
-          }`}
-            </style>
-        <h2>Components Address :</h2>
-        {/* TODO : Duc do that, show each element of row array and add a close, show button */}
-            {rows.map(item => <StackableContainer rows />)} 
-        <style jsx>{`
-          span {
-            text-align: left;
+          }
         `}</style>
       </StackableContainer>
     )

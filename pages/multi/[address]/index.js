@@ -13,8 +13,6 @@ import StackableContainer from "../../../components/layout/StackableContainer";
 import TransactionForm from "../../../components/forms/TransactionForm";
 import TransactionFormAny from "../../../components/forms/TransactionFormAny";
 
-import TransactionList from "../../../components/dataViews/TransactionList";
-
 export async function getServerSideProps(context) {
   let holdings;
 
@@ -37,7 +35,7 @@ export async function getServerSideProps(context) {
     );
     console.log(accountOnChain)
     return {
-      props: { accountOnChain, holdings: holdings.amount / 1000000, "pubkeys": accountOnChain.pubkey.value.pubkeys},
+      props: { accountOnChain, holdings: holdings.amount / 1000000, pubkeys: accountOnChain.pubkey.value.pubkeys},
     };
   } catch (error) {
     console.log(error);
