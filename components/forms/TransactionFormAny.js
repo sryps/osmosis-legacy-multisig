@@ -24,7 +24,7 @@ class TransactionFormAny extends React.Component {
       tx: "",
     };
 
-    this.addressExtraction = txCheck.addressExtraction
+    this.addressAmino = txCheck.addressAmino
     this.addressConversion = txCheck.addressConversion
     this.typeMsg = [
       'cosmos-sdk/MsgWithdrawDelegationReward',
@@ -125,16 +125,16 @@ class TransactionFormAny extends React.Component {
     }
 
     // convert to compatible field
-    for(let i = 0; i < this.addressExtraction.length; i++){
-      if(!(this.addressExtraction[i] in msgValue)) continue;
+    for(let i = 0; i < this.addressAmino.length; i++){
+      if(!(this.addressAmino[i] in msgValue)) continue;
 
-      if(this.addressExtraction[i] === "delegator_address" || this.addressExtraction[i] === "from_address"){
+      if(this.addressAmino[i] === "delegator_address" || this.addressAmino[i] === "from_address"){
         msgValue[this.addressConversion[i]] = this.props.address;
       }else{
-        msgValue[this.addressConversion[i]] = msgValue[this.addressExtraction[i]];
+        msgValue[this.addressConversion[i]] = msgValue[this.addressAmino[i]];
       }
 
-      delete msgValue[this.addressExtraction[i]];
+      delete msgValue[this.addressAmino[i]];
     }
 
     // console.log(msgValue);
