@@ -58,6 +58,7 @@ const JsonCosmosTransaction = (props) => {
             hash-view {
                 display: flex;
             }
+            
       `}</style>
         </StackableContainer>
     </StackableContainer>

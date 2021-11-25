@@ -62,6 +62,7 @@ const Page = (props) => {
           top: 15px;
           left: 15px;
         }
+       
       `}</style>
       <style global jsx>{`
         body {
