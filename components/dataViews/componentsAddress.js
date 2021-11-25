@@ -13,7 +13,7 @@ const ComponentsAddress = (props) => {
     return(
         <StackableContainer>
         <h2>Components Address :</h2>
-        {/* TODO : Duc do that, show each element of row array  */}
+        {/* TODO : Duc do that, show each element of row array and add a close, show button */}
             {rows.map(item => <StackableContainer rows />)} 
         <style jsx>{`
           span {
@@ -24,4 +24,4 @@ const ComponentsAddress = (props) => {
     )
 }
 
-export default ComponentsAddress;
+export default ComponentsAddress ;
