@@ -151,7 +151,7 @@ export default class TransactionSigning extends React.Component {
     };
 
     let bodyBytes = registry.encode(signedTxBodyEncodeObject)
-    console.log("dataa:")
+    console.log("data:")
 
     var pubkey = sig_json_parsed.signatures[0]["public_key"];
 

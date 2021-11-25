@@ -26,7 +26,7 @@ export async function getServerSideProps(context) {
     const accountOnChain = await getMultisigAccount(multisigAddress, client);
     if(accountOnChain.pubkey.type != "tendermint/PubKeyMultisigThreshold"){
       return {
-        props: { error: "This is not a multisig address"}
+        props: { error: "This is not a multisig address", holdings: 0}
       }
     }
 
@@ -41,7 +41,7 @@ export async function getServerSideProps(context) {
   } catch (error) {
     console.log(error);
     return {
-      props: { error: error.message},
+      props: { error: error.message, holdings: 0},
     };
   }
 }

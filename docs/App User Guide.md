@@ -8,7 +8,9 @@ This app requires the [Keplr wallet extension](https://wallet.keplr.app/) to be 
   - [Use Existing Multisig Account](#using-an-existing-multisig-account)
   - [Create a New Multisig Account](#creating-a-new-multisig-account)
 - [Creating a Transaction](#creating-a-transaction)
+- [Importing a Transaction](#importing-a-transaction)
 - [Signing a Transaction](#signing-a-transaction)
+- [Importing a Signature](#importing-a-signature)
 - [Broadcasting a Transaction](#broadcast-a-transaction)
 
 ## Accounts
@@ -41,6 +43,10 @@ Enter in the to address, the amount and optionally a memo. The gas limit is adju
 
 You may want to [Sign a Transaction](#signing-a-transaction) next.
 
+## Importing a Transaction
+
+Hello there ! Master obiwan - kenobi
+
 ## Signing a Transaction
 
 To sign a transaction, make sure you have the Keplr wallet app installed and setup on your browser. Then navigate to the transaction page for the transaction you are trying to sign.  
@@ -53,6 +59,10 @@ Click "Connect Wallet" and then "Sign Transaction". Approve the transaction in t
 
 
 Once enough necessary signers have signed, anyone will be able to [broadcast the transaction](#broadcasting-a-transaction).
+
+## Importing a Signature
+
+
 
 ## Broadcasting a Transaction
 
