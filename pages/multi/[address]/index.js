@@ -16,16 +16,24 @@ import TransactionList from "../../../components/dataViews/TransactionList";
 
 export async function getServerSideProps(context) {
   let holdings;
+
   try {
     const client = await StargateClient.connect(
       process.env.NEXT_PUBLIC_NODE_ADDRESS
     );
     const multisigAddress = context.params.address;
+
+    const accountOnChain = await getMultisigAccount(multisigAddress, client);
+    if(accountOnChain.pubkey.type != "tendermint/PubKeyMultisigThreshold"){
+      return {
+        props: { error: "This is not a multisig address", holdings: 0}
+      }
+    }
+
     holdings = await client.getBalance(
       multisigAddress,
       process.env.NEXT_PUBLIC_DENOM
     );
-    const accountOnChain = await getMultisigAccount(multisigAddress, client);
 
     return {
       props: { accountOnChain, holdings: holdings.amount / 1000000 },
@@ -33,7 +41,7 @@ export async function getServerSideProps(context) {
   } catch (error) {
     console.log(error);
     return {
-      props: { error: error.message},
+      props: { error: error.message, holdings: 0},
     };
   }
 }
@@ -58,7 +66,7 @@ const multipage = (props) => {
           <StackableContainer>
             <div className="multisig-error">
               <p>
-                This multisig address's pubkeys are not available, and so it
+                This multisig address's pubkeys are INVALID or UNAVAILABLE, and so it
                 cannot be used with this tool.
               </p>
               <p>
@@ -105,7 +113,7 @@ const multipage = (props) => {
           <div className="interfaces">
             <div className="col-1">
               <StackableContainer lessPadding>
-                <h2>New transaction</h2>
+                <h2>New Send transaction</h2>
                 <p>
                   Once a transaction is created, it can be signed by the
                   multisig members, and then broadcast.

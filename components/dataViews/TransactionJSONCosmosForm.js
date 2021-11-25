@@ -1,5 +1,6 @@
 import StackableContainer from "../layout/StackableContainer";
 import CopyAndPaste from "./CopyAndPaste";
+import {addressConversion, addressExtraction} from "../../lib/txCheck"
 
 const convertKelprTransaction = (transaction) => {
   let cosmos_tx = {};
@@ -12,6 +13,13 @@ const convertKelprTransaction = (transaction) => {
   for(const key in msg.value){
     if(key === "type") continue;
     msgValue[key] = msg.value[key];
+
+    for(let i = 0; i < addressConversion.length; i++){
+      if(!(addressExtraction[i]==key)) continue;
+      msgValue[addressConversion[i]] = msgValue[addressExtraction[i]];
+      
+      delete msgValue[addressExtraction[i]];
+    }
   }
   body["messages"] = [msgValue];
   body["memo"] = transaction.memo;

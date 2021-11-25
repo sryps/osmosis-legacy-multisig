@@ -24,6 +24,8 @@ class TransactionForm extends React.Component {
   }
 
   handleChange = (e) => {
+    this.setState({ processing: false });
+
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -58,8 +60,8 @@ class TransactionForm extends React.Component {
   };
 
   handleCreate = async () => {
-    console.log(this.props.accountOnChain.accountNumber)
-    if(!this.props.accountOnChain.accountNumber){
+    console.log(this.props.accountOnChain)
+    if(!this.props.accountOnChain){
       window.alert(`Account with address : ${this.props.address} haven't been in chain yet, can't create Transaction!`);
       return null;
     }
@@ -95,7 +97,7 @@ class TransactionForm extends React.Component {
         <button className="remove" onClick={this.props.closeForm}>
           ✕
         </button>
-        <h2>Create New transaction</h2>
+        <h2>Create New Send transaction</h2>
         <div className="form-item">
           <Input
             label="To Address"

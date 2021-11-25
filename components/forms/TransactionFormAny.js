@@ -6,7 +6,7 @@ import {JSONObject} from "core-js/fn/object"
 import Button from "../../components/inputs/Button";
 import Input from "../../components/inputs/Input";
 import TextAreaInput from "../../components/inputs/TextArea";
-import { checkAddressOsmoValid, checkValidatorAddressOsmoValid } from "../../lib/errorChecker";
+import * as txCheck from "../../lib/txCheck";
 
 import StackableContainer from "../layout/StackableContainer";
 
@@ -24,8 +24,8 @@ class TransactionFormAny extends React.Component {
       tx: "",
     };
 
-    this.addressExtraction = ["validator_address", "delegator_address", "from_address", "to_address", "validator_src_address", "validator_dst_address"]
-    this.addressConversion = ["validatorAddress", "delegatorAddress", "fromAddress", "toAddress", "validatorSrcAddress", "validatorDstAddress"]
+    this.addressExtraction = txCheck.addressExtraction
+    this.addressConversion = txCheck.addressConversion
     this.typeMsg = [
       'cosmos-sdk/MsgWithdrawDelegationReward',
       'cosmos-sdk/MsgDelegate', 
@@ -43,6 +43,8 @@ class TransactionFormAny extends React.Component {
   }
 
   handleChange = (e) => {
+    this.setState({ processing: false });
+
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -67,7 +69,7 @@ class TransactionFormAny extends React.Component {
   }
 
   createTransaction = () => { 
-    if(!this.props.accountOnChain.accountNumber){
+    if(!this.props.accountOnChain){
       window.alert(`Account with address : ${this.props.address} haven't been in chain yet, can't create Transaction!`);
       return null;
     }
@@ -77,6 +79,8 @@ class TransactionFormAny extends React.Component {
       window.alert("Processing");
       return null;
     }
+
+    console.log("hello")
     
     // retrieve information from tx json
     let tx_json_parsed;
@@ -103,25 +107,11 @@ class TransactionFormAny extends React.Component {
     }
 
     // console.log(msgValue)
-
-    // check batch address to see if they are legit
-    for (const address of this.addressExtraction ) {
-      if(!(address in msgValue)) continue;
-
-      if(address.includes("validator"))
-        if(!checkValidatorAddressOsmoValid(msgValue[address])){
-          this.setState({addressError: "Invalid field " + address + ". Please Check Again!"});
-          return null;
-        }else{
-          continue;
-        }
-
-
-      if(!checkAddressOsmoValid(msgValue[address])){
-        //pop up invalid form to user
-        this.setState({addressError: "Invalid field " + address + ". Please Check Again!"});
-        return null;
-      }
+    try{
+      txCheck.checkMsg(msgValue)
+    }catch(err){
+      this.setState({ addressError: err.message });
+      return null;
     }
 
     //====== NEW ENGINE TO CONVERT ======
@@ -200,7 +190,7 @@ class TransactionFormAny extends React.Component {
             placeholder="paste your transaction here"
           />
         </div>
-        <Button label="Create Transaction" onClick={this.handleCreate} />
+        <Button label="Import Transaction" onClick={this.handleCreate} />
         <style jsx>{`
           p {
             margin-top: 15px;
