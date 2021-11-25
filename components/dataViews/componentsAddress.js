@@ -12,13 +12,28 @@ const ComponentsAddress = (props) => {
 
     return(
         <StackableContainer>
+        <button className="remove" >
+          ✕
+        </button>
+        <style>{`
+        button.remove {
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+          }`}
+            </style>
         <h2>Components Address :</h2>
         {/* TODO : Duc do that, show each element of row array and add a close, show button */}
             {rows.map(item => <StackableContainer rows />)} 
         <style jsx>{`
           span {
-            text-align: center;
-          }
+            text-align: left;
         `}</style>
       </StackableContainer>
     )
