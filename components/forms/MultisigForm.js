@@ -118,6 +118,7 @@ class MultiSigForm extends React.Component {
       );
       this.props.router.push(`/multi/${multisigAddress}`);
     } catch (error) {
+      window.alert("Failed to creat multisig");
       console.log("Failed to creat multisig: ", error);
     }
   };
