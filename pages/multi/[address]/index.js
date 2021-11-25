@@ -113,7 +113,7 @@ const multipage = (props) => {
           <div className="interfaces">
             <div className="col-1">
               <StackableContainer lessPadding>
-                <h2>New transaction</h2>
+                <h2>New Send transaction</h2>
                 <p>
                   Once a transaction is created, it can be signed by the
                   multisig members, and then broadcast.

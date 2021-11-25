@@ -1,9 +1,6 @@
 import StackableContainer from "../layout/StackableContainer";
 import CopyAndPaste from "./CopyAndPaste";
-import React from "react";
-
-const addressConversion = ["validator_address", "delegator_address", "from_address", "to_address", "validator_src_address", "validator_dst_address"]
-const addressExtraction = ["validatorAddress", "delegatorAddress", "fromAddress", "toAddress", "validatorSrcAddress", "validatorDstAddress"]
+import {addressAmino, addressConversion} from "../../lib/txCheck"
 
 const convertKelprTransaction = (transaction) => {
   let cosmos_tx = {};
@@ -17,11 +14,11 @@ const convertKelprTransaction = (transaction) => {
     if(key === "type") continue;
     msgValue[key] = msg.value[key];
 
-    for(let i = 0; i < addressConversion.length; i++){
-      if(!(addressExtraction[i]==key)) continue;
-      msgValue[addressConversion[i]] = msgValue[addressExtraction[i]];
+    for(let i = 0; i < addressAmino.length; i++){
+      if(!(addressConversion[i]==key)) continue;
+      msgValue[addressAmino[i]] = msgValue[addressConversion[i]];
       
-      delete msgValue[addressExtraction[i]];
+      delete msgValue[addressConversion[i]];
     }
   }
   body["messages"] = [msgValue];
