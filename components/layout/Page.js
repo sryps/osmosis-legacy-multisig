@@ -26,7 +26,7 @@ const Page = (props) => {
       <div className="footer-links">
         <StackableContainer base lessPadding lessMargin>
           <p>
-            <a href="https://github.com/notional-labs/cosmoshub-legacy-multisig">
+            <a href="https://github.com/notional-labs/cosmoshub-legacy-multisig/tree/osmosis-modification">
               View on github
             </a>
           </p>

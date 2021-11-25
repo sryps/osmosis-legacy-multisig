@@ -20,7 +20,7 @@ const DevHelper = (props) => (
         </a>
       </li>
     </ul>
-    <a href="https://github.com/notional-labs/cosmoshub-legacy-multisig">
+    <a href="https://github.com/notional-labs/cosmoshub-legacy-multisig/tree/osmosis-modification">
       View on Github
     </a>
 
