@@ -43,6 +43,8 @@ class TransactionFormAny extends React.Component {
   }
 
   handleChange = (e) => {
+    this.setState({ processing: false });
+
     this.setState({
       [e.target.name]: e.target.value,
     });
