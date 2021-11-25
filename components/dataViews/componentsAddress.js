@@ -17,7 +17,7 @@ const ComponentsAddress = (props) => {
       <StackableContainer>
         {showCreate ? (  
          <StackableContainer lessPadding fullHeight>
-          <Button label="Show Address" onClick={() => {
+          <Button label="Show Component Addresses" onClick={() => {
                     setShowTxForm(true);
                     setShowCreate(false);
                   }} />
