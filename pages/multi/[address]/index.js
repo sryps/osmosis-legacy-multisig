@@ -7,6 +7,7 @@ import { getMultisigAccount } from "../../../lib/multisigHelpers";
 import HashView from "../../../components/dataViews/HashView";
 import MultisigHoldings from "../../../components/dataViews/MultisigHoldings";
 import MultisigMembers from "../../../components/dataViews/MultisigMembers";
+import ComponentsAddress from "../../../components/dataViews/componentsAddress";
 import Page from "../../../components/layout/Page";
 import StackableContainer from "../../../components/layout/StackableContainer";
 import TransactionForm from "../../../components/forms/TransactionForm";
@@ -22,21 +23,21 @@ export async function getServerSideProps(context) {
       process.env.NEXT_PUBLIC_NODE_ADDRESS
     );
     const multisigAddress = context.params.address;
-
     const accountOnChain = await getMultisigAccount(multisigAddress, client);
     if(accountOnChain.pubkey.type != "tendermint/PubKeyMultisigThreshold"){
+
       return {
         props: { error: "This is not a multisig address", holdings: 0}
       }
     }
-
+    console.log(accountOnChain)
     holdings = await client.getBalance(
       multisigAddress,
       process.env.NEXT_PUBLIC_DENOM
     );
-
+    console.log(accountOnChain)
     return {
-      props: { accountOnChain, holdings: holdings.amount / 1000000 },
+      props: { accountOnChain, holdings: holdings.amount / 1000000, "pubkeys": accountOnChain.pubkey.value.pubkeys},
     };
   } catch (error) {
     console.log(error);
@@ -62,9 +63,11 @@ const multipage = (props) => {
             <HashView hash={address} />
           </h1>
         </StackableContainer>
+        {props.m}
         {props.error && (
           <StackableContainer>
             <div className="multisig-error">
+              <p>Error: {props.error} !!!!</p>
               <p>
                 This multisig address's pubkeys are INVALID or UNAVAILABLE, and so it
                 cannot be used with this tool.
@@ -78,6 +81,10 @@ const multipage = (props) => {
             </div>
           </StackableContainer>
         )}
+        <br/>
+        <div>
+          <ComponentsAddress pubkeys = {props.pubkeys} />
+        </div>
         <br/>
         <div>
           <MultisigHoldings holdings={props.holdings} />
