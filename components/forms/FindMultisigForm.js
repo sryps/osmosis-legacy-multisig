@@ -5,6 +5,7 @@ import { withRouter } from "next/router";
 import Button from "../inputs/Button";
 import StackableContainer from "../layout/StackableContainer";
 import Input from "../inputs/Input";
+import {checkAddressOsmoValid} from "../../lib/txCheck";
 
 class FindMultisigForm extends React.Component {
   constructor(props) {
@@ -25,6 +26,14 @@ class FindMultisigForm extends React.Component {
 
   handleSearch = async () => {
     this.setState({ processing: true });
+
+    //basic check
+    if(!checkAddressOsmoValid(this.state.address)){
+      window.alert("Invalid osmosis address format");
+      this.state.address = "";
+      this.setState({ processing: false });
+      return null;
+    }
 
     this.props.router.push(`/multi/${this.state.address}`);
   };
