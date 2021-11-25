@@ -31,6 +31,7 @@ const StackableContainer = (props) => (
           0px 1.53495px 5.02137px rgba(0, 0, 0, 0.0261253),
           0px 0.671179px 2.19114px rgba(0, 0, 0, 0.0180827);
       }
+      
     `}</style>
   </div>
 );
