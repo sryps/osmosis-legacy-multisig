@@ -97,7 +97,7 @@ class TransactionForm extends React.Component {
         <button className="remove" onClick={this.props.closeForm}>
           ✕
         </button>
-        <h2>Create New transaction</h2>
+        <h2>Create New Send transaction</h2>
         <div className="form-item">
           <Input
             label="To Address"

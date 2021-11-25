@@ -1,8 +1,6 @@
 import StackableContainer from "../layout/StackableContainer";
 import CopyAndPaste from "./CopyAndPaste";
-
-const addressConversion = ["validator_address", "delegator_address", "from_address", "to_address", "validator_src_address", "validator_dst_address"]
-const addressExtraction = ["validatorAddress", "delegatorAddress", "fromAddress", "toAddress", "validatorSrcAddress", "validatorDstAddress"]
+import {addressConversion, addressExtraction} from "../../lib/txCheck"
 
 const convertKelprTransaction = (transaction) => {
   let cosmos_tx = {};

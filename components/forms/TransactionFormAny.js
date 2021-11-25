@@ -190,7 +190,7 @@ class TransactionFormAny extends React.Component {
             placeholder="paste your transaction here"
           />
         </div>
-        <Button label="Create Transaction" onClick={this.handleCreate} />
+        <Button label="Import Transaction" onClick={this.handleCreate} />
         <style jsx>{`
           p {
             margin-top: 15px;
