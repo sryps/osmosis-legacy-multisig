@@ -10,7 +10,7 @@ import StackableContainer from "../layout/StackableContainer";
 import ThresholdInput from "../inputs/ThresholdInput";
 
 let emptyPubKeyGroup = () => {
-  return { address: "", compressedPubkey: "", keyError: "" };
+  return { address: "", compressedPubkey: "", keyError: "", isPubkey: false };
 };
 
 class MultiSigForm extends React.Component {
@@ -123,6 +123,12 @@ class MultiSigForm extends React.Component {
     }
   };
 
+  togglePubkey = (index) => {
+    const { pubkeys } = this.state;
+    pubkeys[index].isPubkey = !pubkeys[index].isPubkey;
+    this.setState({ pubkeys });
+  };
+
   render() {
     return (
       <>
@@ -148,9 +154,17 @@ class MultiSigForm extends React.Component {
                     onChange={(e) => {
                       this.handleKeyGroupChange(index, e);
                     }}
-                    value={pubkeyGroup.address}
-                    label="Address"
-                    name="address"
+                    value={
+                      pubkeyGroup.isPubkey
+                        ? pubkeyGroup.compressedPubkey
+                        : pubkeyGroup.address
+                    }
+                    label={
+                      pubkeyGroup.isPubkey
+                        ? "Public Key (Secp256k1)"
+                        : "Address"
+                    }
+                    name={pubkeyGroup.isPubkey ? "compressedPubkey" : "address"}
                     width="100%"
                     placeholder="osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk"
                     error={pubkeyGroup.keyError}
@@ -158,6 +172,12 @@ class MultiSigForm extends React.Component {
                       this.handleKeyBlur(index, e);
                     }}
                   />
+                  <button
+                    className="toggle-type"
+                    onClick={() => this.togglePubkey(index)}
+                  >
+                    Use {pubkeyGroup.isPubkey ? "Address" : "Public Key"}
+                  </button>
                 </div>
               </div>
             </StackableContainer>
@@ -186,6 +206,8 @@ class MultiSigForm extends React.Component {
         <style jsx>{`
           .key-inputs {
             display: flex;
+            flex-direction: column;
+            align-items: end;
             justify-content: space-between;
             max-width: 350px;
           }
@@ -214,6 +236,15 @@ class MultiSigForm extends React.Component {
           }
           p:first-child {
             margin-top: 0;
+          }
+          .toggle-type {
+            margin-top: 10px;
+            font-size: 12px;
+            font-style: italic;
+            border: none;
+            background: none;
+            color: white;
+            text-decoration: underline;
           }
         `}</style>
       </>
