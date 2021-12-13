@@ -1,16 +1,16 @@
 import StackableContainer from "../layout/StackableContainer";
 
 const MultisigHoldings = (props) => {
-  const uatomToAtom = (uatom) => {
-    if (uatom === 0) return 0;
-    return uatom / 1000000;
+  const uatomToAtom = (uosmo) => {
+    if (uosmo === 0) return 0;
+    return uosmo / 1000000;
   };
 
   return (
     <StackableContainer lessPadding fullHeight>
       <h2>Holdings</h2>
       <StackableContainer lessPadding lessMargin>
-        <span>{props.holdings} ATOM</span>
+        <span>{props.holdings} OSMO </span>
       </StackableContainer>
       <style jsx>{`
         span {

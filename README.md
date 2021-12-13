@@ -2,9 +2,9 @@
 
 This app allows for multisig users to create, sign and broadcast transactions on any stargate enabled chain. It's built with Cosmjs, Next.js, FaunaDB and Vercel.
 
-<!-- [The app is live here](https://cosmoshub-legacy-multisig.vercel.app/). -->
+[The app is live here](https://cosmoshub-legacy-multisig-5l9gg5sr7-nghuyenthevinh2000.vercel.app/).
 
-[Here is a user guide on how to use the app](https://github.com/samepant/cosmoshub-legacy-multisig/blob/master/docs/App%20User%20Guide.md)
+[Here is a user guide on how to use the app](https://github.com/notional-labs/cosmoshub-legacy-multisig/blob/master/docs/App%20User%20Guide.md)
 
 ## Running your own instance
 
@@ -40,7 +40,7 @@ Redeploy the app and it will pickup the new environment variables and should be 
 
 Copy the `.env.sample` file and rename it to `.env.local`
 
-### 2. Run a local cosmos-sdk Simapp instance
+### 2. Run a local Simapp instance
 
 It's recommmended that you make your simapp instance mimic the denomination of osmosis-1 (`uosmo`). Put the local address of your node as the value for `NEXT_PUBLIC_NODE_ADDRESS` in your `.env.local` file.
 
