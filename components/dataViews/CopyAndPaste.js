@@ -8,8 +8,8 @@ export default (props) => (
     </svg>
     <style jsx>{`
       svg {
-        height: 100%;
-        width: auto;
+        height: 25px;
+        width: 25px;
       }
 
       path {

@@ -20,7 +20,7 @@ class MultiSigForm extends React.Component {
     this.state = {
       pubkeys: [emptyPubKeyGroup(), emptyPubKeyGroup()],
       threshold: 2,
-      processing: false,
+      processing : false
     };
   }
 
@@ -70,6 +70,7 @@ class MultiSigForm extends React.Component {
   };
 
   handleKeyBlur = async (index, e) => {
+    console.log("handleKeyBlur")
     try {
       const { pubkeys } = this.state;
       let pubkey;
@@ -100,10 +101,33 @@ class MultiSigForm extends React.Component {
   };
 
   handleCreate = async () => {
-    this.setState({ processing: true });
-    const compressedPubkeys = this.state.pubkeys.map(
+    if(this.state.processing){
+      console.log("the last create order is being processed. Pls wait.")
+      return
+    }
+    
+    // wait for all keys to be retrieved
+    let compressedPubkeys = this.state.pubkeys.map(
       (item) => item.compressedPubkey
     );
+    let retryTime = 3
+    while(compressedPubkeys.includes('') && retryTime > 0){
+      console.log("waiting")
+      await (new Promise(resolve => setTimeout(resolve, 1000)));
+
+      // try again retrieval
+      compressedPubkeys = this.state.pubkeys.map(
+        (item) => item.compressedPubkey
+      );
+      retryTime--;
+    }
+
+    if(retryTime == 0){
+      window.alert("fail to retrieve key")
+      this.setState({processing : false});
+      return 
+    }
+
     let multisigAddress;
     try {
       multisigAddress = await createMultisigFromCompressedSecp256k1Pubkeys(
@@ -112,7 +136,10 @@ class MultiSigForm extends React.Component {
       );
       this.props.router.push(`/multi/${multisigAddress}`);
     } catch (error) {
+      window.alert("Failed to creat multisig");
       console.log("Failed to creat multisig: ", error);
+    } finally {
+      this.setState({processing : false});
     }
   };
 
@@ -161,8 +188,8 @@ class MultiSigForm extends React.Component {
                     width="100%"
                     placeholder={
                       pubkeyGroup.isPubkey
-                        ? "Akd/qKMWdZXyiMnSu6aFLpQEGDO0ijyal9mXUIcVaPNX"
-                        : "cosmos1vqpjljwsynsn58dugz0w8ut7kun7t8ls2qkmsq"
+                      ? "Akd/qKMWdZXyiMnSu6aFLpQEGDO0ijyal9mXUIcVaPNX"
+                      : "osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk"
                     }
                     error={pubkeyGroup.keyError}
                     onBlur={(e) => {

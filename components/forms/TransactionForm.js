@@ -18,10 +18,14 @@ class TransactionForm extends React.Component {
       gas: 200000,
       processing: false,
       addressError: "",
+      fee : 0,
+
     };
   }
 
   handleChange = (e) => {
+    this.setState({ processing: false });
+
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -39,9 +43,11 @@ class TransactionForm extends React.Component {
     };
     const gasLimit = gas;
     const fee = {
-      amount: coins(6000, process.env.NEXT_PUBLIC_DENOM),
+      amount: coins(parseInt(this.state.fee), process.env.NEXT_PUBLIC_DENOM),
       gas: gasLimit.toString(),
     };
+
+    console.log(this.props)
 
     return {
       accountNumber: this.props.accountOnChain.accountNumber,
@@ -54,6 +60,18 @@ class TransactionForm extends React.Component {
   };
 
   handleCreate = async () => {
+    console.log(this.props.accountOnChain)
+    if(!this.props.accountOnChain){
+      window.alert(`Account with address : ${this.props.address} haven't been in chain yet, can't create Transaction!`);
+      return null;
+    }
+
+    if (this.state.processing == true) {
+      console.log("loading")
+      window.alert("Processing");
+      return null;
+    }
+
     if (this.state.toAddress.length === 43) {
       this.setState({ processing: true });
       const tx = this.createTransaction(
@@ -69,7 +87,7 @@ class TransactionForm extends React.Component {
         `${this.props.address}/transaction/${transactionID}`
       );
     } else {
-      this.setState({ addressError: "Use a valid cosmos-hub address" });
+      this.setState({ addressError: "Use a valid osmosis address" });
     }
   };
 
@@ -79,7 +97,7 @@ class TransactionForm extends React.Component {
         <button className="remove" onClick={this.props.closeForm}>
           ✕
         </button>
-        <h2>Create New transaction</h2>
+        <h2>Create New Send transaction</h2>
         <div className="form-item">
           <Input
             label="To Address"
@@ -87,12 +105,12 @@ class TransactionForm extends React.Component {
             value={this.state.toAddress}
             onChange={this.handleChange}
             error={this.state.addressError}
-            placeholder="cosmos1fjrzd7ycxzse05zme3r2zqwpsvcrskv80wj82h"
+            placeholder="osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk"
           />
         </div>
         <div className="form-item">
           <Input
-            label="Amount (ATOM)"
+            label="Amount (OSMO)"
             name="amount"
             type="number"
             value={this.state.amount}
@@ -101,10 +119,19 @@ class TransactionForm extends React.Component {
         </div>
         <div className="form-item">
           <Input
-            label="Gas Limit (UATOM)"
+            label="Gas Limit (UOSMO)"
             name="gas"
             type="number"
             value={this.state.gas}
+            onChange={this.handleChange}
+          />
+        </div>
+        <div className="form-item">
+          <Input
+            label="Fee (UOSMO)"
+            name="fee"
+            type="number"
+            value={this.state.fee}
             onChange={this.handleChange}
           />
         </div>
@@ -117,7 +144,7 @@ class TransactionForm extends React.Component {
             onChange={this.handleChange}
           />
         </div>
-        <Button label="Create Transaction" onClick={this.handleCreate} />
+        <Button label="Create Transaction" onClick={this.handleCreate}  />
         <style jsx>{`
           p {
             margin-top: 15px;

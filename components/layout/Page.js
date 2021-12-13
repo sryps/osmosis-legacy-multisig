@@ -3,8 +3,12 @@ import StackableContainer from "./StackableContainer";
 
 const Page = (props) => {
   return (
+    
     <div className="page">
-      <Head title={props.title || "Cosmos Multisig Manager"} />
+      <div className="logo">
+        <a href="/"><img src="https://app.osmosis.zone/public/assets/main/osmosis-logo-main.svg" /></a>
+      </div>
+      <Head title={props.title || "Osmosis Multisig Manager"} />
       <div className="container">
         {props.rootMultisig && (
           <div className="nav">
@@ -22,7 +26,7 @@ const Page = (props) => {
       <div className="footer-links">
         <StackableContainer base lessPadding lessMargin>
           <p>
-            <a href="https://github.com/samepant/cosmoshub-legacy-multisig">
+            <a href="https://github.com/notional-labs/cosmoshub-legacy-multisig/tree/osmosis-modification">
               View on github
             </a>
           </p>
@@ -32,7 +36,7 @@ const Page = (props) => {
         .page {
           display: flex;
           justify-content: center;
-          padding: 120px 0;
+          padding: 100px 0;
         }
         .container {
           position: relative;
@@ -52,6 +56,13 @@ const Page = (props) => {
           bottom: 20px;
           right: 20px;
         }
+        .logo
+        {
+          position: fixed;
+          top: 15px;
+          left: 15px;
+        }
+       
       `}</style>
       <style global jsx>{`
         body {
@@ -60,12 +71,9 @@ const Page = (props) => {
             sans-serif;
           color: white;
           min-height: 100vh;
-          background: linear-gradient(
-            240.16deg,
-            #3f023c 10.46%,
-            #561253 54.88%,
-            #580a55 94.89%
-          );
+          background-image: url("https://i.imgur.com/v4EIRIW.png"), url("https://app.osmosis.zone/public/assets/backgrounds/osmosis-home-bg-pattern.svg?fbclid=IwAR19OkrUiYrMc-aEVJrzHR4KLQrGIeQ0LIaR6Az6JmROPHdviV5wi38x9cg"),linear-gradient(280deg, #050628, #15163C);
+          background-position:  left bottom;
+          background-repeat: no-repeat,repeat, repeat;
           font-size: 16px;
           margin: 0;
         }
@@ -103,6 +111,7 @@ const Page = (props) => {
           font-style: italic;
           line-height: 14px;
         }
+        
       `}</style>
     </div>
   );
