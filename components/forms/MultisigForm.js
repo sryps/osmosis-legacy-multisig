@@ -112,7 +112,8 @@ class MultiSigForm extends React.Component {
     );
     let retryTime = 3
     while(compressedPubkeys.includes('') && retryTime > 0){
-      setTimeout(()=>{},500)
+      console.log("waiting")
+      await (new Promise(resolve => setTimeout(resolve, 1000)));
 
       // try again retrieval
       compressedPubkeys = this.state.pubkeys.map(
