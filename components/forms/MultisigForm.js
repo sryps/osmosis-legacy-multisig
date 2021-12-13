@@ -70,27 +70,34 @@ class MultiSigForm extends React.Component {
   };
 
   handleKeyBlur = async (index, e) => {
-    let address = e.target.value;
-    if (address.length > 0) {
-      try {
-        // let compressedPubkey = e.target.value;
-        // if (compressedPubkey.length !== 44) {
-        //   throw new Error("Invalid Secp256k1 pubkey");
-        // }
-
-        console.log("address = " + address)
-
-        const pubkey = await this.getPubkeyFromNode(address);
-        const { pubkeys } = this.state;
-        pubkeys[index].compressedPubkey = pubkey;
-        pubkeys[index].keyError = "";
-        this.setState({ pubkeys });
-      } catch (error) {
-        console.log(error);
-        const { pubkeys } = this.state;
-        pubkeys[index].keyError = error.message;
-        this.setState({ pubkeys });
+    try {
+      const { pubkeys } = this.state;
+      let pubkey;
+      // use pubkey
+      console.log(pubkeys[index]);
+      if (pubkeys[index].isPubkey) {
+        pubkey = e.target.value;
+        if (pubkey.length !== 44) {
+          throw new Error("Invalid Secp256k1 pubkey");
+        }
+      } else {
+        // use address to fetch pubkey
+        let address = e.target.value;
+        if (address.length > 0) {
+          pubkey = await this.getPubkeyFromNode(address);
+        }
       }
+
+      console.log("address = " + address)
+
+      pubkeys[index].compressedPubkey = pubkey;
+      pubkeys[index].keyError = "";
+      this.setState({ pubkeys });
+    } catch (error) {
+      console.log(error);
+      const { pubkeys } = this.state;
+      pubkeys[index].keyError = error.message;
+      this.setState({ pubkeys });
     }
   };
 
@@ -166,7 +173,11 @@ class MultiSigForm extends React.Component {
                     }
                     name={pubkeyGroup.isPubkey ? "compressedPubkey" : "address"}
                     width="100%"
-                    placeholder="osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk"
+                    placeholder={
+                      pubkeyGroup.isPubkey
+                      ? "Akd/qKMWdZXyiMnSu6aFLpQEGDO0ijyal9mXUIcVaPNX"
+                      : "osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk"
+                    }
                     error={pubkeyGroup.keyError}
                     onBlur={(e) => {
                       this.handleKeyBlur(index, e);
