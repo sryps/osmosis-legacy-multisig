@@ -88,8 +88,6 @@ class MultiSigForm extends React.Component {
         }
       }
 
-      console.log("address = " + address)
-
       pubkeys[index].compressedPubkey = pubkey;
       pubkeys[index].keyError = "";
       this.setState({ pubkeys });
