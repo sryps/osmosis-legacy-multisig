@@ -20,7 +20,7 @@ class MultiSigForm extends React.Component {
     this.state = {
       pubkeys: [emptyPubKeyGroup(), emptyPubKeyGroup()],
       threshold: 2,
-      processing: false,
+      processing : false
     };
   }
 
@@ -70,6 +70,7 @@ class MultiSigForm extends React.Component {
   };
 
   handleKeyBlur = async (index, e) => {
+    console.log("handleKeyBlur")
     try {
       const { pubkeys } = this.state;
       let pubkey;
@@ -100,20 +101,31 @@ class MultiSigForm extends React.Component {
   };
 
   handleCreate = async () => {
-    const compressedPubkeys = this.state.pubkeys.map(
+    if(this.state.processing){
+      console.log("the last create order is being processed. Pls wait.")
+      return
+    }
+    
+    // wait for all keys to be retrieved
+    let compressedPubkeys = this.state.pubkeys.map(
       (item) => item.compressedPubkey
     );
+    let retryTime = 3
+    while(compressedPubkeys.includes('') && retryTime > 0){
+      setTimeout(()=>{},500)
 
-    if (this.state.processing == true) {
-      console.log("loading")
-      window.alert("Processing");
+      // try again retrieval
+      compressedPubkeys = this.state.pubkeys.map(
+        (item) => item.compressedPubkey
+      );
+      retryTime--;
     }
 
-    if(compressedPubkeys.includes('')){
-      window.alert("Please wait for all query in chain")
+    if(retryTime == 0){
+      window.alert("fail to retrieve key")
+      this.setState({processing : false});
+      return 
     }
-
-    this.setState({ processing: true });
 
     let multisigAddress;
     try {
@@ -125,6 +137,8 @@ class MultiSigForm extends React.Component {
     } catch (error) {
       window.alert("Failed to creat multisig");
       console.log("Failed to creat multisig: ", error);
+    } finally {
+      this.setState({processing : false});
     }
   };
 
