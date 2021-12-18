@@ -2,9 +2,9 @@
 
 This app allows for multisig users to create, sign and broadcast transactions on any stargate enabled chain. It's built with Cosmjs, Next.js, FaunaDB and Vercel.
 
-[The app is live here](https://cosmoshub-legacy-multisig-5l9gg5sr7-nghuyenthevinh2000.vercel.app/).
+[The app is live here](https://osmosis-legacy-multisig.vercel.app/).
 
-[Here is a user guide on how to use the app](https://github.com/notional-labs/cosmoshub-legacy-multisig/blob/master/docs/App%20User%20Guide.md)
+[Here is a user guide on how to use the app](https://github.com/osmosis-labs/osmosis-legacy-multisig/blob/master/docs/App%20User%20Guide.md)
 
 ## Running your own instance
 
