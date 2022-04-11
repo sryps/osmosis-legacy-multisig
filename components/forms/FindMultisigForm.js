@@ -51,11 +51,12 @@ class FindMultisigForm extends React.Component {
         <StackableContainer lessPadding lessMargin>
           <Input
             onChange={this.handleChange}
-            value="osmo1vmkt6ysppk8m4rhlq78tpqyh429lhlsadznsxr"
+            value={this.state.address}
             label="Multisig Address"
             name="address"
             placeholder="osmo1vmkt6ysppk8m4rhlq78tpqyh429lhlsadznsxr"
           />
+          <p>osmo1vmkt6ysppk8m4rhlq78tpqyh429lhlsadznsxr</p>
           <Button
             label="Use this Multisig"
             onClick={this.handleSearch}
