@@ -51,7 +51,7 @@ class FindMultisigForm extends React.Component {
         <StackableContainer lessPadding lessMargin>
           <Input
             onChange={this.handleChange}
-            value={this.state.address}
+            value="osmo1vmkt6ysppk8m4rhlq78tpqyh429lhlsadznsxr"
             label="Multisig Address"
             name="address"
             placeholder="osmo1vmkt6ysppk8m4rhlq78tpqyh429lhlsadznsxr"
