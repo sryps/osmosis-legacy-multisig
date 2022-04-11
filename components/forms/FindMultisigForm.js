@@ -54,7 +54,7 @@ class FindMultisigForm extends React.Component {
             value={this.state.address}
             label="Multisig Address"
             name="address"
-            placeholder="osmo1ya403hmh5ehj2qp6uf0pa672ynjguc7aea4mpk"
+            placeholder="osmo1vmkt6ysppk8m4rhlq78tpqyh429lhlsadznsxr"
           />
           <Button
             label="Use this Multisig"
